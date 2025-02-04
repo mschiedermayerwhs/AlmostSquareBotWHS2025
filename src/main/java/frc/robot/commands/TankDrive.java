@@ -57,7 +57,7 @@ public class TankDrive extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        m_driveSubsystem.tankDrive(0.0, 0.0);
+        //m_driveSubsystem.tankDrive(0.0, 0.0);
         System.out.println("stopped");
     }
 

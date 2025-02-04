@@ -36,14 +36,14 @@ public class DriveSubsystem extends SubsystemBase {
 
         SparkMaxConfig invertedConfig = new SparkMaxConfig();
         notInvertedConfig.inverted(true);
-        
-        SparkMaxConfig notInvertedFollowFrontLeftConfig = new SparkMaxConfig();
-        notInvertedFollowFrontLeftConfig.inverted(false);
-        notInvertedFollowFrontLeftConfig.follow(frontLeftMotor);
 
         frontLeftMotor = new SparkMax(Constants.DriveConstants.kFrontLeftDrivePort, MotorType.kBrushless);
         frontLeftMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
  
+        SparkMaxConfig notInvertedFollowFrontLeftConfig = new SparkMaxConfig();
+        notInvertedFollowFrontLeftConfig.inverted(false);
+        notInvertedFollowFrontLeftConfig.follow(frontLeftMotor);
+
         frontRightMotor = new SparkMax(Constants.DriveConstants.kFrontRightDrivePort, MotorType.kBrushless);
         frontRightMotor.configure(invertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 

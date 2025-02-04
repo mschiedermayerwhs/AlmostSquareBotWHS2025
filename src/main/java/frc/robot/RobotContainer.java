@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -47,6 +48,9 @@ public class RobotContainer {
   public final Elevator m_elevator = new Elevator();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
+  public static SlewRateLimiter leftLimit = new SlewRateLimiter(0.9);
+  public static SlewRateLimiter rightLimit = new SlewRateLimiter(0.9);
+
   // Joysticks
   private final XboxController xboxController = new XboxController(0);
 
@@ -73,8 +77,10 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+
+
     // Configure default commands
-    m_driveSubsystem.setDefaultCommand(new TankDrive(() -> getLeftY(), () -> getRightY(), m_driveSubsystem));
+    m_driveSubsystem.setDefaultCommand(new TankDrive(() -> leftLimit.calculate(getLeftY()), () -> rightLimit.calculate(getRightY()), m_driveSubsystem));
 
     // Configure autonomous sendable chooser
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
@@ -88,6 +94,7 @@ public class RobotContainer {
   public static RobotContainer getInstance() {
     return m_robotContainer;
   }
+
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -151,6 +158,7 @@ public class RobotContainer {
 
     final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
     aButton.onTrue(new ChangeElevatorHeight(0, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    //aButton.onTrue(new TestDriveWaitStopCmd(0.1, 0.1, 1.0, m_driveSubsystem));
 
     //final JoystickButton bButton2 = new JoystickButton(xboxController, XboxController.Button.kB.value);
     //bButton2.onTrue(new EmptyCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
