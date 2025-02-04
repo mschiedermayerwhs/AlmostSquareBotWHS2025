@@ -65,7 +65,7 @@ public class RobotContainer {
 
     // SmartDashboard Buttons
     SmartDashboard.putData("AutonomousCommand", new AutonomousCommand());
-    SmartDashboard.putData("TankDrive: stopped", new TankDrive(() -> 0.0, () -> 0.0, m_driveSubsystem));
+    //SmartDashboard.putData("TankDrive: stopped", new TankDrive(() -> 0.0, () -> 0.0, m_driveSubsystem));
     SmartDashboard.putData("EmptyCommand", new EmptyCommand());
 
     // TODO Mr. Schiedermayer - We may want to put separate buttons for each height.

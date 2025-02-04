@@ -1,7 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+//static import reduces verbosity of adding constants without this you would need to Write Constants.DriveConstants.kFrontLeftDrivePort
+import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -37,24 +38,24 @@ public class DriveSubsystem extends SubsystemBase {
         SparkMaxConfig invertedConfig = new SparkMaxConfig();
         notInvertedConfig.inverted(true);
 
-        frontLeftMotor = new SparkMax(Constants.DriveConstants.kFrontLeftDrivePort, MotorType.kBrushless);
+        frontLeftMotor = new SparkMax(kFrontLeftDrivePort, MotorType.kBrushless);
         frontLeftMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
  
         SparkMaxConfig notInvertedFollowFrontLeftConfig = new SparkMaxConfig();
         notInvertedFollowFrontLeftConfig.inverted(false);
         notInvertedFollowFrontLeftConfig.follow(frontLeftMotor);
 
-        frontRightMotor = new SparkMax(Constants.DriveConstants.kFrontRightDrivePort, MotorType.kBrushless);
+        frontRightMotor = new SparkMax(kFrontRightDrivePort, MotorType.kBrushless);
         frontRightMotor.configure(invertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        backLeftMotor = new SparkMax(Constants.DriveConstants.kBackLeftDrivePort, MotorType.kBrushless);
+        backLeftMotor = new SparkMax(kBackLeftDrivePort, MotorType.kBrushless);
         backLeftMotor.configure(notInvertedFollowFrontLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
           
         SparkMaxConfig invertedFollowFrontRightConfig = new SparkMaxConfig();
         invertedFollowFrontRightConfig.inverted(true);
         invertedFollowFrontRightConfig.follow(frontRightMotor);
 
-        backRightMotor = new SparkMax(Constants.DriveConstants.kBackRigthDrivePort, MotorType.kBrushless);
+        backRightMotor = new SparkMax(kBackRigthDrivePort, MotorType.kBrushless);
         backRightMotor.configure(invertedFollowFrontRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
  
         m_differentialDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
