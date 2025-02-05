@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //static import reduces verbosity of adding constants without this you would need to Write Constants.DriveConstants.kFrontLeftDrivePort
 import static frc.robot.Constants.DriveConstants.*;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkBase.PersistMode;
@@ -79,6 +81,17 @@ public class DriveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         // This method will be called once per scheduler run
+        SmartDashboard.putNumber("Back Left Pos: ", getBackLeftPos());
+        SmartDashboard.putNumber("Back Left Vel: ", getBackLeftVel());
+
+        SmartDashboard.putNumber("Back Right Pos: ", getBackRightPos());
+        SmartDashboard.putNumber("Back Right Vel: ", getBackRightVel());
+
+        SmartDashboard.putNumber("Front Left Pos: ", getFrontLeftPos());
+        SmartDashboard.putNumber("Front Left Vel: ", getFrontLeftVel());
+
+        SmartDashboard.putNumber("Front Right Pos: ", getFrontRightPos());
+        SmartDashboard.putNumber("Front Right Vel: ", getFrontRightVel());
     }
 
     @Override
@@ -109,7 +122,7 @@ public class DriveSubsystem extends SubsystemBase {
         return frontRightEnc;
     }
 
-    public RelativeEncoder getbackLeftEncoder() {
+    public RelativeEncoder getBackLeftEncoder() {
         return backLeftEnc;
     }
 
@@ -129,7 +142,7 @@ public class DriveSubsystem extends SubsystemBase {
         return backLeftEnc.getPosition();
     }
 
-    public double getbackRightPos() {
+    public double getBackRightPos() {
         return frontLeftEnc.getPosition();
     }
 
@@ -145,7 +158,7 @@ public class DriveSubsystem extends SubsystemBase {
         return backLeftEnc.getVelocity();
     }
 
-    public double getbackRightVel() {
-        return frontLeftEnc.getVelocity();
+    public double getBackRightVel() {
+        return backRightEnc.getVelocity();
     }
 }
