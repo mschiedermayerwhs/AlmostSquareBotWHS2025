@@ -49,8 +49,7 @@ public class TestDriveWaitStopCmd extends SequentialCommandGroup {
             new TankDrive(() -> leftSpeed, () -> rightSpeed, subsystem),
             new WaitCommand(seconds),                                       //Commands.waitSeconds(seconds), I think this is an old way
             new TankDrive(() -> 0.0, () -> 0.0, subsystem)
-        );
-        
+        );        
     }
 
     // Called once when this command runs
