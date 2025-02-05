@@ -42,7 +42,6 @@ private SparkMax armRotateMotor;
     *
     */
     public AlgaeGrabber() {
-        // TODO - Inverting algae grabber motors
         SparkMaxConfig notInvertedConfig = new SparkMaxConfig();
         notInvertedConfig.inverted(false);
         SparkMaxConfig invertedConfig = new SparkMaxConfig();

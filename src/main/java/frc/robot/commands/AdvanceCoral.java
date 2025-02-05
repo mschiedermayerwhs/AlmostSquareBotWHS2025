@@ -32,7 +32,6 @@ public class AdvanceCoral extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // TODO - Speeds of output motors / amount of spin to apply
         if(RobotContainer.currentElevatorHeight == 0) {
             m_coralChute.setLeftOutputMotor(0.8);
             m_coralChute.setRightOutputMotor(1);

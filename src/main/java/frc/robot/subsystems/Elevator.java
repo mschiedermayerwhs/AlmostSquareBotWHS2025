@@ -43,7 +43,6 @@ private SparkMax elevatorMotor2;
     *
     */
     public Elevator() {
-        // TODO - Inverting Elevator motors
         SparkMaxConfig notInvertedConfig = new SparkMaxConfig();
         notInvertedConfig.inverted(false);
         SparkMaxConfig invertedConfig = new SparkMaxConfig();

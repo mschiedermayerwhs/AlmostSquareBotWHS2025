@@ -68,7 +68,6 @@ public class RobotContainer {
     //SmartDashboard.putData("TankDrive: stopped", new TankDrive(() -> 0.0, () -> 0.0, m_driveSubsystem));
     SmartDashboard.putData("EmptyCommand", new EmptyCommand());
 
-    // TODO Mr. Schiedermayer - We may want to put separate buttons for each height.
     // We need to figure out the value to pass to achieve those heights
     // SmartDashboard.putData("ChangeElevatorHeight", new ChangeElevatorHeight(
     // m_elevator ));
@@ -148,7 +147,12 @@ public class RobotContainer {
     //newer back button test from tankdrive test
     final JoystickButton backButton = new JoystickButton(xboxController, XboxController.Button.kBack.value);
     backButton.whileTrue(
-        new TankDrive(() -> 0.5, () -> 0.5, m_driveSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+        new TankDrive(() -> 0.2, () -> 0.2, m_driveSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
+    // added left bumper: drive for 3 seconds (another drive-wait-stop test)
+    final JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kLeftBumper.value);
+    leftBumper.onTrue(
+        (new TankDrive(() -> 0.2, () -> 0.2, m_driveSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf)).withTimeout(3));
     
     final JoystickButton yButton = new JoystickButton(xboxController, XboxController.Button.kY.value);
     yButton.onTrue(new ChangeElevatorHeight(2, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
