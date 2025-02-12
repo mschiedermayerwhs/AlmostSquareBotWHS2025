@@ -14,25 +14,22 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.DriveSubsystem;
+import com.revrobotics.spark.*;
+import frc.robot.subsystems.Elevator;
 
 /**
  *
  */
-public class TankDrive extends Command {
+public class RunElevator extends Command {
 
-    private final DriveSubsystem m_driveSubsystem;
-    private DoubleSupplier m_leftSpeed;
-    private DoubleSupplier m_rightSpeed;
- 
-    public TankDrive(DoubleSupplier leftSpeed, DoubleSupplier rightSpeed, DriveSubsystem subsystem) {
-  
-        m_leftSpeed = leftSpeed;
-        m_rightSpeed = rightSpeed;
- 
-        m_driveSubsystem = subsystem;
-        addRequirements(m_driveSubsystem);
+    private final Elevator m_elevator;
+    private DoubleSupplier m_speed;
+
+    public RunElevator(DoubleSupplier speed, Elevator elevator) {
+        m_speed = speed;
+
+        m_elevator = elevator;
+        addRequirements(m_elevator);    
     }
 
     // Called when the command is initially scheduled.
@@ -43,19 +40,13 @@ public class TankDrive extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // Speed limited depending on height; if elevator is at L2 or L3, the joysticks are half as effective
-        if(RobotContainer.currentElevatorHeight > 1) {
-            m_driveSubsystem.tankDrive(m_leftSpeed.getAsDouble() * 0.5, m_rightSpeed.getAsDouble() * 0.5);
-        } else {            
-            m_driveSubsystem.tankDrive(m_leftSpeed.getAsDouble(), m_rightSpeed.getAsDouble());
-        }
+        m_elevator.setElevatorMotor(m_speed.getAsDouble());
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        m_driveSubsystem.tankDrive(0.0, 0.0);
-        System.out.println("stopped");
+        m_elevator.setElevatorMotor(m_speed.getAsDouble());
     }
 
     // Returns true when the command should end.
@@ -65,7 +56,7 @@ public class TankDrive extends Command {
     }
 
     @Override
-    public boolean runsWhenDisabled() {       
-        return false;    
+    public boolean runsWhenDisabled() {
+        return false;
     }
 }

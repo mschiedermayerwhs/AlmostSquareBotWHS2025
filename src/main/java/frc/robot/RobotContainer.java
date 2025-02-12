@@ -71,7 +71,6 @@ public class RobotContainer {
     // We need to figure out the value to pass to achieve those heights
     // SmartDashboard.putData("ChangeElevatorHeight", new ChangeElevatorHeight(
     // m_elevator ));
-    SmartDashboard.putData("AdvanceCoral", new AdvanceCoralInstant(m_coralChute));
 
     // Configure the button bindings
     configureButtonBindings();
