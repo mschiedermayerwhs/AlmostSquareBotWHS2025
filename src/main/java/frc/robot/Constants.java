@@ -26,6 +26,10 @@ public class Constants {
        public static final int kFrontLeftDrivePort = 4;
        public static final int kFrontRightDrivePort = 1;
        public static final int kBackRigthDrivePort = 3; 
+
+       public static final double kDriveGearRatio = 8.45;       // default for TouchBox Mini S
+       public static final double kDriveWheelsCircumference = 478.77872; // this is in millimeters
+       public static final double kDriveEncoderConversionFactor = kDriveGearRatio * kDriveWheelsCircumference;
     }    
 }
 
