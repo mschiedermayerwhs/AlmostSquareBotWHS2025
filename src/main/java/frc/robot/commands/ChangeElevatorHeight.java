@@ -34,20 +34,8 @@ public class ChangeElevatorHeight extends SequentialCommandGroup {
         m_elevator = subsystem;
         addRequirements(m_elevator);
 
-        // int currentHeight = RobotContainer.currentElevatorHeight;
-        // double distanceToTravel = (some function of m_elevatorHeight and currentHeight);
-        //     *remember to invert motors depending on which way the elevator is traveling
-        // double currentPos = m_elevator.(???); // use to find end position
-
-        // RobotContainer.currentElevatorHeight = m_elevatorHeight; // update static variable
-
         addCommands(
-            // RunElevator(speed, m_elevator).until(???);
-            /**
-            * Access elevator encoders from here?
-            * run until elevator.getPos() returns distanceToTravel + currentPos
-            * Use constant elevator speed?
-            */
+            
         );
     }
 

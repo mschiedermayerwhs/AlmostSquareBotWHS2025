@@ -85,6 +85,8 @@ public class RobotContainer {
     // m_chooser.setDefaultOption("$command.getName()", new ${name.replace(' ',
     // '')}( m_${name.substring(0,1).toLowerCase()}${name.substring(1).replace(' ',
     // '')} ));
+    
+    m_driveSubsystem.resetEncoders();
 
     SmartDashboard.putData("Auto Mode", m_chooser);
   }
@@ -163,8 +165,8 @@ public class RobotContainer {
     aButton.onTrue(new ChangeElevatorHeight(0, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     //aButton.onTrue(new TestDriveWaitStopCmd(0.1, 0.1, 1.0, m_driveSubsystem));
 
-    //final JoystickButton bButton2 = new JoystickButton(xboxController, XboxController.Button.kB.value);
-    //bButton2.onTrue(new EmptyCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    final JoystickButton bButton2 = new JoystickButton(xboxController, XboxController.Button.kB.value);
+    bButton2.onTrue(m_driveSubsystem.goToSetpointCommand(1000).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
   }
 
   public XboxController getXboxController() {
