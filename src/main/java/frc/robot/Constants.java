@@ -30,6 +30,12 @@ public class Constants {
        public static final double kDriveGearRatio = 8.45;       // default for TouchBox Mini S
        public static final double kDriveWheelsCircumference = 478.77872; // this is in millimeters
        public static final double kDriveEncoderConversionFactor = kDriveGearRatio * kDriveWheelsCircumference;
+
+       public static final double kMinOutput = -0.25;
+       public static final double kMaxOutput = 0.25;
+       public static final double kP = 0.001;
+       public static final double kI = 0.0;
+       public static final double kD = 0.0;
     }    
 }
 

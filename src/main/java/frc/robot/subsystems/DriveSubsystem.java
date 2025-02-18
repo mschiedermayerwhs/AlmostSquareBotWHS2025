@@ -55,10 +55,10 @@ public class DriveSubsystem extends SubsystemBase {
         frontLeftConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
         frontLeftConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .p(0.001)
-            .i(0)
-            .d(0)
-            .outputRange(-0.5, 0.5);
+            .p(kP)
+            .i(kI)
+            .d(kD)
+            .outputRange(kMinOutput, kMaxOutput);
         frontLeftMotor = new SparkMax(kFrontLeftDrivePort, MotorType.kBrushless);
         frontLeftMotor.configure(frontLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         frontLeftEnc = frontLeftMotor.getEncoder();
@@ -70,10 +70,10 @@ public class DriveSubsystem extends SubsystemBase {
         backLeftConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
         backLeftConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .p(0.001)
-            .i(0)
-            .d(0)
-            .outputRange(-0.5, 0.5);
+            .p(kP)
+            .i(kI)
+            .d(kD)
+            .outputRange(kMinOutput, kMaxOutput);
         backLeftMotor = new SparkMax(kBackLeftDrivePort, MotorType.kBrushless);
         backLeftMotor.configure(backLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         backLeftEnc = backLeftMotor.getEncoder();
@@ -84,10 +84,10 @@ public class DriveSubsystem extends SubsystemBase {
         frontRightConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
         frontRightConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .p(0.001)
-            .i(0)
-            .d(0)
-            .outputRange(-0.5, 0.5);
+            .p(kP)
+            .i(kI)
+            .d(kD)
+            .outputRange(kMinOutput, kMaxOutput);
         frontRightMotor = new SparkMax(kFrontRightDrivePort, MotorType.kBrushless);
         frontRightMotor.configure(frontRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         frontRightEnc = frontRightMotor.getEncoder();
@@ -99,16 +99,16 @@ public class DriveSubsystem extends SubsystemBase {
         invertedFollowFrontRightConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
         invertedFollowFrontRightConfig.closedLoop
             .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .p(0.001)
-            .i(0)
-            .d(0)
-            .outputRange(-0.5, 0.5);
+            .p(kP)
+            .i(kI)
+            .d(kD)
+            .outputRange(kMinOutput, kMaxOutput);
         backRightMotor = new SparkMax(kBackRigthDrivePort, MotorType.kBrushless);
         backRightMotor.configure(invertedFollowFrontRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         backRightEnc = backRightMotor.getEncoder();
  
         m_differentialDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
-        
+
         // FIXME We may need to get the controller for each motor.  At least for left/right
         PIDcontroller = frontLeftMotor.getClosedLoopController();
     }
@@ -133,6 +133,7 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Front Right Pos: ", getFrontRightPos());
         SmartDashboard.putNumber("Front Right Vel: ", getFrontRightVel());
 
+        // TODO add a setpointRight and setpointLeft
         PIDcontroller.setReference(setpoint, ControlType.kPosition);
     }
 
@@ -155,6 +156,8 @@ public class DriveSubsystem extends SubsystemBase {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public void goToSetpoint(double point) {
+        // TODO set different setpoint for left and right.  May need to find what current position is
+        // Because positive 1000 should be 1 meter forward, but the setpoiint is 1000 higher than current position
         setpoint = point;
         // System.out.println("setting setpoint...");
         // PIDcontroller.setReference(point, ControlType.kPosition);
