@@ -31,6 +31,7 @@ public class DriveSubsystem extends SubsystemBase {
     private SparkMax backLeftMotor;
     private SparkMax backRightMotor;
     private DifferentialDrive m_differentialDrive;
+    private double setpoint;
 
     private SparkClosedLoopController PIDcontroller;
 
@@ -46,64 +47,69 @@ public class DriveSubsystem extends SubsystemBase {
     * https://github.com/REVrobotics/REVLib-Examples/blob/main/Java/SPARK/Closed%20Loop%20Control/src/main/java/frc/robot/Robot.java
     * https://github.com/frcteam-108-Sigmacats/SigmaCode2025TestBot/blob/main/src/main/java/frc/robot/subsystems/SwerveModule.java
     */
-    public DriveSubsystem() {
-        SparkMaxConfig notInvertedConfig = new SparkMaxConfig();
-        notInvertedConfig.inverted(false);
-        notInvertedConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
-        notInvertedConfig.closedLoop
-        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        .p(0)
-        .i(0)
-        .d(0)
-        .outputRange(-0.5, 0.5);
+    public DriveSubsystem() {       
 
-        SparkMaxConfig invertedConfig = new SparkMaxConfig();
-        invertedConfig.inverted(true);
-        invertedConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
-        invertedConfig.closedLoop
-        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        .p(0)
-        .i(0)
-        .d(0)
-        .outputRange(-0.5, 0.5);
-
+        // FRONT LEFT
+        SparkMaxConfig frontLeftConfig = new SparkMaxConfig();
+        frontLeftConfig.inverted(true);
+        frontLeftConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
+        frontLeftConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .p(0.001)
+            .i(0)
+            .d(0)
+            .outputRange(-0.5, 0.5);
         frontLeftMotor = new SparkMax(kFrontLeftDrivePort, MotorType.kBrushless);
-        frontLeftMotor.configure(invertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        frontLeftMotor.configure(frontLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         frontLeftEnc = frontLeftMotor.getEncoder();
         
-        SparkMaxConfig notInvertedFollowFrontLeftConfig = new SparkMaxConfig();
-        notInvertedFollowFrontLeftConfig.inverted(false);
-        notInvertedFollowFrontLeftConfig.follow(frontLeftMotor);
-        notInvertedFollowFrontLeftConfig.closedLoop
-        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        .p(0)
-        .i(0)
-        .d(0)
-        .outputRange(-0.5, 0.5);
+        // BACK LEFT
+        SparkMaxConfig backLeftConfig = new SparkMaxConfig();
+        backLeftConfig.inverted(false);
+        backLeftConfig.follow(frontLeftMotor);
+        backLeftConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
+        backLeftConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .p(0.001)
+            .i(0)
+            .d(0)
+            .outputRange(-0.5, 0.5);
+        backLeftMotor = new SparkMax(kBackLeftDrivePort, MotorType.kBrushless);
+        backLeftMotor.configure(backLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        backLeftEnc = backLeftMotor.getEncoder();
 
+        // FRONT RIGHT
+        SparkMaxConfig frontRightConfig = new SparkMaxConfig();
+        frontRightConfig.inverted(false);
+        frontRightConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
+        frontRightConfig.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .p(0.001)
+            .i(0)
+            .d(0)
+            .outputRange(-0.5, 0.5);
         frontRightMotor = new SparkMax(kFrontRightDrivePort, MotorType.kBrushless);
-        frontRightMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        frontRightMotor.configure(frontRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         frontRightEnc = frontRightMotor.getEncoder();
 
-        backLeftMotor = new SparkMax(kBackLeftDrivePort, MotorType.kBrushless);
-        backLeftMotor.configure(notInvertedFollowFrontLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        backLeftEnc = backLeftMotor.getEncoder();
-          
+        // BACK RIGHT
         SparkMaxConfig invertedFollowFrontRightConfig = new SparkMaxConfig();
         invertedFollowFrontRightConfig.inverted(true);
         invertedFollowFrontRightConfig.follow(frontRightMotor);
+        invertedFollowFrontRightConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
         invertedFollowFrontRightConfig.closedLoop
-        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        .p(0)
-        .i(0)
-        .d(0)
-        .outputRange(-0.5, 0.5);
-
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .p(0.001)
+            .i(0)
+            .d(0)
+            .outputRange(-0.5, 0.5);
         backRightMotor = new SparkMax(kBackRigthDrivePort, MotorType.kBrushless);
         backRightMotor.configure(invertedFollowFrontRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         backRightEnc = backRightMotor.getEncoder();
  
         m_differentialDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
+        
+        // FIXME We may need to get the controller for each motor.  At least for left/right
         PIDcontroller = frontLeftMotor.getClosedLoopController();
     }
 
@@ -127,7 +133,7 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Front Right Pos: ", getFrontRightPos());
         SmartDashboard.putNumber("Front Right Vel: ", getFrontRightVel());
 
-        
+        PIDcontroller.setReference(setpoint, ControlType.kPosition);
     }
 
     @Override
@@ -142,12 +148,17 @@ public class DriveSubsystem extends SubsystemBase {
         backRightEnc.setPosition(0);
     }
 
+    public Command resetEncodersCommand() {
+        return run(() -> resetEncoders());
+    }
+
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public void goToSetpoint(double point) {
-        System.out.println("setting setpoint...");
-        PIDcontroller.setReference(point, ControlType.kPosition);
-        System.out.println("setpoint done");
+        setpoint = point;
+        // System.out.println("setting setpoint...");
+        // PIDcontroller.setReference(point, ControlType.kPosition);
+        // System.out.println("setpoint done");
     }
 
     public Command goToSetpointCommand(double point) {

@@ -66,7 +66,7 @@ public class RobotContainer {
     // SmartDashboard Buttons
     SmartDashboard.putData("AutonomousCommand", new AutonomousCommand());
     //SmartDashboard.putData("TankDrive: stopped", new TankDrive(() -> 0.0, () -> 0.0, m_driveSubsystem));
-    SmartDashboard.putData("EmptyCommand", new EmptyCommand());
+    SmartDashboard.putData("Reset Drive Encoders", m_driveSubsystem.resetEncodersCommand());
 
     // We need to figure out the value to pass to achieve those heights
     // SmartDashboard.putData("ChangeElevatorHeight", new ChangeElevatorHeight(
