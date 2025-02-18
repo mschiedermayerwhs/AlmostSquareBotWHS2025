@@ -32,6 +32,8 @@ public class DriveSubsystem extends SubsystemBase {
     private SparkMax backRightMotor;
     private DifferentialDrive m_differentialDrive;
     private double setpoint;
+    private double setpointLeft;
+    private double setpointRight;
 
     private SparkClosedLoopController PIDcontroller;
 
@@ -68,12 +70,12 @@ public class DriveSubsystem extends SubsystemBase {
         backLeftConfig.inverted(false);
         backLeftConfig.follow(frontLeftMotor);
         backLeftConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
-        backLeftConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .p(kP)
-            .i(kI)
-            .d(kD)
-            .outputRange(kMinOutput, kMaxOutput);
+        // backLeftConfig.closedLoop
+        //     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        //     .p(kP)
+        //     .i(kI)
+        //     .d(kD)
+        //     .outputRange(kMinOutput, kMaxOutput);
         backLeftMotor = new SparkMax(kBackLeftDrivePort, MotorType.kBrushless);
         backLeftMotor.configure(backLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         backLeftEnc = backLeftMotor.getEncoder();
@@ -93,18 +95,18 @@ public class DriveSubsystem extends SubsystemBase {
         frontRightEnc = frontRightMotor.getEncoder();
 
         // BACK RIGHT
-        SparkMaxConfig invertedFollowFrontRightConfig = new SparkMaxConfig();
-        invertedFollowFrontRightConfig.inverted(true);
-        invertedFollowFrontRightConfig.follow(frontRightMotor);
-        invertedFollowFrontRightConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
-        invertedFollowFrontRightConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .p(kP)
-            .i(kI)
-            .d(kD)
-            .outputRange(kMinOutput, kMaxOutput);
+        SparkMaxConfig backRightConfig = new SparkMaxConfig();
+        backRightConfig.inverted(true);
+        backRightConfig.follow(frontRightMotor);
+        backRightConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
+        // invertedFollowFrontRightConfig.closedLoop
+        //     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        //     .p(kP)
+        //     .i(kI)
+        //     .d(kD)
+        //     .outputRange(kMinOutput, kMaxOutput);
         backRightMotor = new SparkMax(kBackRigthDrivePort, MotorType.kBrushless);
-        backRightMotor.configure(invertedFollowFrontRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        backRightMotor.configure(backRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         backRightEnc = backRightMotor.getEncoder();
  
         m_differentialDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
