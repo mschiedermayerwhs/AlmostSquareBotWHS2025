@@ -2,6 +2,10 @@ package frc.robot.subsystems;
 
 //static import reduces verbosity of adding constants without this you would need to Write Constants.DriveConstants.kFrontLeftDrivePort
 import static frc.robot.Constants.DriveConstants.*;
+
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
@@ -15,7 +19,6 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 
 /**
  *
@@ -31,11 +34,14 @@ public class DriveSubsystem extends SubsystemBase {
     private SparkMax backLeftMotor;
     private SparkMax backRightMotor;
     private DifferentialDrive m_differentialDrive;
-    private double setpoint;
     private double setpointLeft;
     private double setpointRight;
 
-    private SparkClosedLoopController PIDcontroller;
+    private SparkClosedLoopController PIDcontrollerLeft;
+    private SparkClosedLoopController PIDcontrollerRight;
+
+    private PIDController pidLeft;
+    private PIDController pidRight;
 
     // May only need encoder for leaders
     RelativeEncoder frontLeftEnc;
@@ -51,16 +57,20 @@ public class DriveSubsystem extends SubsystemBase {
     */
     public DriveSubsystem() {       
 
+        // params coming from Constants.java
+        pidLeft = new PIDController(kP, kI, kD);
+        pidRight = new PIDController(kP, kI, kD);
+
         // FRONT LEFT
         SparkMaxConfig frontLeftConfig = new SparkMaxConfig();
         frontLeftConfig.inverted(true);
         frontLeftConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
-        frontLeftConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .p(kP)
-            .i(kI)
-            .d(kD)
-            .outputRange(kMinOutput, kMaxOutput);
+        // frontLeftConfig.closedLoop
+        //     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        //     .p(kP)
+        //     .i(kI)
+        //     .d(kD)
+        //     .outputRange(kMinOutput, kMaxOutput);
         frontLeftMotor = new SparkMax(kFrontLeftDrivePort, MotorType.kBrushless);
         frontLeftMotor.configure(frontLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         frontLeftEnc = frontLeftMotor.getEncoder();
@@ -84,12 +94,11 @@ public class DriveSubsystem extends SubsystemBase {
         SparkMaxConfig frontRightConfig = new SparkMaxConfig();
         frontRightConfig.inverted(false);
         frontRightConfig.encoder.positionConversionFactor(kDriveEncoderConversionFactor);
-        frontRightConfig.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .p(kP)
-            .i(kI)
-            .d(kD)
-            .outputRange(kMinOutput, kMaxOutput);
+        // frontRightConfig.closedLoop
+        //     .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        //     .p(kP)
+        //     .i(kI)
+        //     .d(kD);
         frontRightMotor = new SparkMax(kFrontRightDrivePort, MotorType.kBrushless);
         frontRightMotor.configure(frontRightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         frontRightEnc = frontRightMotor.getEncoder();
@@ -112,7 +121,8 @@ public class DriveSubsystem extends SubsystemBase {
         m_differentialDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
         // FIXME We may need to get the controller for each motor.  At least for left/right
-        PIDcontroller = frontLeftMotor.getClosedLoopController();
+        // PIDcontrollerLeft = frontLeftMotor.getClosedLoopController();
+        // PIDcontrollerRight = frontRightMotor.getClosedLoopController();
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
@@ -122,6 +132,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putData(m_differentialDrive);
         // This method will be called once per scheduler run
         SmartDashboard.putNumber("Back Left Pos: ", getBackLeftPos());
         SmartDashboard.putNumber("Back Left Vel: ", getBackLeftVel());
@@ -135,8 +146,19 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Front Right Pos: ", getFrontRightPos());
         SmartDashboard.putNumber("Front Right Vel: ", getFrontRightVel());
 
-        // TODO add a setpointRight and setpointLeft
-        PIDcontroller.setReference(setpoint, ControlType.kPosition);
+       // PIDcontrollerLeft.setReference(setpointLeft, ControlType.kPosition);
+       // PIDcontrollerRight.setReference(setpointRight, ControlType.kPosition);
+       SmartDashboard.putNumber("Left Drive SetPoint: ", setpointLeft);
+       SmartDashboard.putNumber("Right Drive SetPoint: ", setpointLeft);
+
+       double leftPower =  pidLeft.calculate(getFrontLeftPos(), setpointLeft);
+       double rightPower =  pidRight.calculate(getFrontRightPos(), setpointRight);
+
+       SmartDashboard.putNumber("Left PID Power: ", leftPower);
+       SmartDashboard.putNumber("Right PID Power: ", rightPower);
+
+    //    tankDrive(   leftPower, 
+    //                 rightPower);
     }
 
     @Override
@@ -152,17 +174,26 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public Command resetEncodersCommand() {
-        return run(() -> resetEncoders());
+        return run(() -> resetEncoders()).withTimeout(0.25);
     }
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public void goToSetpoint(double point) {
+        double curPosLeft = frontLeftEnc.getPosition();
+        double curPosRight = frontRightEnc.getPosition();
+       
+
+        setpointLeft = curPosLeft + point;
+        setpointRight = curPosRight + point;
+        System.out.println("[" + Timer.getFPGATimestamp() + "] Left Motor Current Pos: " + curPosLeft + ". SetPoint: " + setpointLeft);
+        System.out.println("Right Motor Current Pos: " + curPosRight + ". SetPoint: " + setpointRight);
         // TODO set different setpoint for left and right.  May need to find what current position is
         // Because positive 1000 should be 1 meter forward, but the setpoiint is 1000 higher than current position
-        setpoint = point;
+        //setpoint = point;
         // System.out.println("setting setpoint...");
-        // PIDcontroller.setReference(point, ControlType.kPosition);
+        //PIDcontrollerLeft.setReference(setpointLeft, ControlType.kPosition);
+        //PIDcontrollerRight.setReference(setpointRight, ControlType.kPosition);
         // System.out.println("setpoint done");
     }
 

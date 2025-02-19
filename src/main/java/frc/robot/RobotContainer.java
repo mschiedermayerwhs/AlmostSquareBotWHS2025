@@ -17,12 +17,14 @@ import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
-
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 //import edu.wpi.first.wpilibj2.command.button.POVButton;
 
@@ -78,7 +80,7 @@ public class RobotContainer {
 
 
     // Configure default commands
-    m_driveSubsystem.setDefaultCommand(new TankDrive(() -> leftLimit.calculate(getLeftY()), () -> rightLimit.calculate(getRightY()), m_driveSubsystem));
+    // TODO uncomment m_driveSubsystem.setDefaultCommand(new TankDrive(() -> leftLimit.calculate(getLeftY()), () -> rightLimit.calculate(getRightY()), m_driveSubsystem));
 
     // Configure autonomous sendable chooser
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
@@ -89,6 +91,27 @@ public class RobotContainer {
     m_driveSubsystem.resetEncoders();
 
     SmartDashboard.putData("Auto Mode", m_chooser);
+
+     CommandScheduler.getInstance()
+        .onCommandInitialize(
+            command ->
+                Shuffleboard.addEventMarker(
+                    "Command initialized", command.getName(), EventImportance.kNormal));
+    CommandScheduler.getInstance()
+        .onCommandExecute(
+            command ->
+                Shuffleboard.addEventMarker(
+                    "Command executed", command.getName(), EventImportance.kNormal));
+    CommandScheduler.getInstance()
+        .onCommandFinish(
+            command ->
+                Shuffleboard.addEventMarker(
+                    "Command finished", command.getName(), EventImportance.kNormal));
+    CommandScheduler.getInstance()
+        .onCommandInterrupt(
+            command ->
+                Shuffleboard.addEventMarker(
+                    "Command interrupted", command.getName(), EventImportance.kNormal));
   }
 
   public static RobotContainer getInstance() {
@@ -166,7 +189,7 @@ public class RobotContainer {
     //aButton.onTrue(new TestDriveWaitStopCmd(0.1, 0.1, 1.0, m_driveSubsystem));
 
     final JoystickButton bButton2 = new JoystickButton(xboxController, XboxController.Button.kB.value);
-    bButton2.onTrue(m_driveSubsystem.goToSetpointCommand(1000).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    bButton2.onTrue(m_driveSubsystem.goToSetpointCommand(100).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
   }
 
   public XboxController getXboxController() {
