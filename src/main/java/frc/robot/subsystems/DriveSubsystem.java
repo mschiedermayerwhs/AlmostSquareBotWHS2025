@@ -37,11 +37,8 @@ public class DriveSubsystem extends SubsystemBase {
     private double setpointLeft;
     private double setpointRight;
 
-    private SparkClosedLoopController PIDcontrollerLeft;
-    private SparkClosedLoopController PIDcontrollerRight;
-
-    private PIDController pidLeft;
-    private PIDController pidRight;
+    // private SparkClosedLoopController PIDcontrollerLeft;
+    // private SparkClosedLoopController PIDcontrollerRight;
 
     // May only need encoder for leaders
     RelativeEncoder frontLeftEnc;
@@ -56,11 +53,6 @@ public class DriveSubsystem extends SubsystemBase {
     * https://github.com/frcteam-108-Sigmacats/SigmaCode2025TestBot/blob/main/src/main/java/frc/robot/subsystems/SwerveModule.java
     */
     public DriveSubsystem() {       
-
-        // params coming from Constants.java
-        pidLeft = new PIDController(kP, kI, kD);
-        pidRight = new PIDController(kP, kI, kD);
-
         // FRONT LEFT
         SparkMaxConfig frontLeftConfig = new SparkMaxConfig();
         frontLeftConfig.inverted(true);
@@ -120,7 +112,6 @@ public class DriveSubsystem extends SubsystemBase {
  
         m_differentialDrive = new DifferentialDrive(frontLeftMotor, frontRightMotor);
 
-        // FIXME We may need to get the controller for each motor.  At least for left/right
         // PIDcontrollerLeft = frontLeftMotor.getClosedLoopController();
         // PIDcontrollerRight = frontRightMotor.getClosedLoopController();
     }
@@ -146,19 +137,11 @@ public class DriveSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Front Right Pos: ", getFrontRightPos());
         SmartDashboard.putNumber("Front Right Vel: ", getFrontRightVel());
 
+        // This was kind of working.  However, it seemed to be going in the wrong direction
+        // therefore, it never would reach the setpoint.  ALSO: the b button code was still firing off
+        // the command to set the setpoint MANY times, so the setpoint kept getting re-updated...
        // PIDcontrollerLeft.setReference(setpointLeft, ControlType.kPosition);
        // PIDcontrollerRight.setReference(setpointRight, ControlType.kPosition);
-       SmartDashboard.putNumber("Left Drive SetPoint: ", setpointLeft);
-       SmartDashboard.putNumber("Right Drive SetPoint: ", setpointLeft);
-
-       double leftPower =  pidLeft.calculate(getFrontLeftPos(), setpointLeft);
-       double rightPower =  pidRight.calculate(getFrontRightPos(), setpointRight);
-
-       SmartDashboard.putNumber("Left PID Power: ", leftPower);
-       SmartDashboard.putNumber("Right PID Power: ", rightPower);
-
-    //    tankDrive(   leftPower, 
-    //                 rightPower);
     }
 
     @Override
@@ -183,7 +166,7 @@ public class DriveSubsystem extends SubsystemBase {
         double curPosLeft = frontLeftEnc.getPosition();
         double curPosRight = frontRightEnc.getPosition();
        
-
+        // This causes issues with analog stick inputs.
         setpointLeft = curPosLeft + point;
         setpointRight = curPosRight + point;
         System.out.println("[" + Timer.getFPGATimestamp() + "] Left Motor Current Pos: " + curPosLeft + ". SetPoint: " + setpointLeft);

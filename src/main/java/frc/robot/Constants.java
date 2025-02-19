@@ -39,5 +39,16 @@ public class Constants {
        public static final double kD = 0.0;
        
     }    
+
+    public static final class ElevatorConstants {
+        public static final int kElevatorDriveLeftPort = 5;
+        public static final int kElevatorDriveRightPort = 6;
+
+        public static final double kP = 0.0005;
+        public static final double kI = 0.0;
+        public static final double kD = 0.0;
+        public static final double kMinOutput = -0.25;
+        public static final double kMaxOutput = 0.25;
+    }
 }
 
