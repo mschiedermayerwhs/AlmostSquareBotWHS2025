@@ -69,6 +69,7 @@ public class RobotContainer {
     SmartDashboard.putData("AutonomousCommand", new AutonomousCommand());
     //SmartDashboard.putData("TankDrive: stopped", new TankDrive(() -> 0.0, () -> 0.0, m_driveSubsystem));
     SmartDashboard.putData("Reset Drive Encoders", m_driveSubsystem.resetEncodersCommand());
+    SmartDashboard.putData("Reset Elevator Encoders", m_elevator.resetEncodersCommand());
 
     // We need to figure out the value to pass to achieve those heights
     // SmartDashboard.putData("ChangeElevatorHeight", new ChangeElevatorHeight(
@@ -179,13 +180,13 @@ public class RobotContainer {
         (new TankDrive(() -> 0.2, () -> 0.2, m_driveSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf)).withTimeout(3));
     
     final JoystickButton yButton = new JoystickButton(xboxController, XboxController.Button.kY.value);
-    yButton.onTrue(new ChangeElevatorHeight(2, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    yButton.onTrue(new ChangeElevatorLevel(2, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     final JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
-    xButton.onTrue(new ChangeElevatorHeight(1, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    xButton.onTrue(new ChangeElevatorLevel(1, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
-    aButton.onTrue(new ChangeElevatorHeight(0, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    aButton.onTrue(new ChangeElevatorLevel(0, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     //aButton.onTrue(new TestDriveWaitStopCmd(0.1, 0.1, 1.0, m_driveSubsystem));
 
     final JoystickButton bButton2 = new JoystickButton(xboxController, XboxController.Button.kB.value);
