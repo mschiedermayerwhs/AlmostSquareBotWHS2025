@@ -16,6 +16,8 @@ import static frc.robot.Constants.DriveConstants.kMaxOutput;
 import static frc.robot.Constants.ElevatorConstants.*;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -93,6 +95,8 @@ private SparkClosedLoopController PIDcontroller;
     public void periodic() {
         // This method will be called once per scheduler run
 
+        SmartDashboard.putNumber("Elev Leader Pos", getLeadPosition());
+        SmartDashboard.putNumber("Elev Follower Pos", getFollowerPosition()); 
     }
 
     @Override
@@ -108,10 +112,11 @@ private SparkClosedLoopController PIDcontroller;
         //leadElevatorMotor.set(speed); // the other motor should follow
     }
 
+    // My biggest concern is making sure this method is only executed one time for a button press
     public void goToLevel(int level) {
-        //if levels are actually evenly spaced, we should eb able to directly translate an elevator index level to a distance
+        // if levels are actually evenly spaced, we should be able to directly translate an elevator index level to a distance
         // then setReference to set the new setpoint
-        // requires tuned conversion factors
+        // requires tuned conversion factors for the encoder config, and also use the factors here to convert
         switch(level) {
             case 0: PIDcontroller.setReference(1, ControlType.kPosition); // units?
             case 1: PIDcontroller.setReference(2, ControlType.kPosition); // units?
