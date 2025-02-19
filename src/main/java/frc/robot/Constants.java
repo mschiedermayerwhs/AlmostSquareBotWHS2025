@@ -44,6 +44,10 @@ public class Constants {
         public static final int kElevatorDriveLeftPort = 5;
         public static final int kElevatorDriveRightPort = 6;
 
+        public static final int kTicksPerRevolution = 42;     // default for Rev Neo
+        public static final double kGearRatio = 12; // TODO TUNE THIS!  It is at least 12, but ratio may be altered based on belt pulley reductions
+        public static final double kSprocketCircumference = 50; // TODO TUNE THIS! 50 is an estimate, in mm
+
         public static final double kP = 0.0005;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
