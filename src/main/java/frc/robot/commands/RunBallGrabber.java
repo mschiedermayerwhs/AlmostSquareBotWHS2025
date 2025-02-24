@@ -1,17 +1,18 @@
 
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.AlgaeGrabber;
 
-import frc.robot.RobotContainer;
-import frc.robot.subsystems.CoralChute;
+public class RunBallGrabber extends Command {
 
-public class AdvanceCoral extends Command {
-    
-    private final CoralChute m_coralChute;
+    private final AlgaeGrabber m_algaeGrabber;
+    private boolean m_forward;
 
-    public AdvanceCoral(CoralChute subsystem) {
-        m_coralChute = subsystem;
-        addRequirements(m_coralChute);
+    public RunBallGrabber(AlgaeGrabber algaeGrabber, boolean forward) {
+        m_algaeGrabber = algaeGrabber;
+        addRequirements(m_algaeGrabber);
+
+        m_forward = forward;
     }
 
     // Called when the command is initially scheduled.
@@ -20,17 +21,13 @@ public class AdvanceCoral extends Command {
     }
 
     // Called every time the scheduler runs while the command is scheduled.
-    // TODO: Advancing coral: correct amount of backspin/speed?
     @Override
     public void execute() {
-        if(RobotContainer.currentElevatorHeight == 0) {
-            m_coralChute.setLeftOutputMotor(0.8);
-            m_coralChute.setRightOutputMotor(1);
+        if(m_forward) {
+            m_algaeGrabber.setBallGrabberMotor(1.0); // TODO: Direction and speed of ball grabber motor.
         } else {
-            m_coralChute.setLeftOutputMotor(1);
-            m_coralChute.setRightOutputMotor(1);
+            m_algaeGrabber.setBallGrabberMotor(-1.0);
         }
-        System.out.println("Advancing coral...");
     }
 
     // Called once the command ends or is interrupted.

@@ -23,6 +23,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.RelativeEncoder;
 
+import static frc.robot.Constants.AlgaeGrabberConstants.*;
 
 /**
  *
@@ -41,10 +42,10 @@ public class AlgaeGrabber extends SubsystemBase {
         SparkMaxConfig invertedConfig = new SparkMaxConfig();
         invertedConfig.inverted(true);
 
-        // ballGrabberMotor = new SparkMax(10, MotorType.kBrushless);
+        // ballGrabberMotor = new SparkMax(kBallGrabberMotorPort, MotorType.kBrushless);
         // ballGrabberMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        // armRotateMotor = new SparkMax(12, MotorType.kBrushless);
+        // armRotateMotor = new SparkMax(kArmRotateMotorPort, MotorType.kBrushless);
         // armRotateMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         armRotateEnc = armRotateMotor.getEncoder();
@@ -73,7 +74,11 @@ public class AlgaeGrabber extends SubsystemBase {
     }
 
     public void setArmRotateMotor(double speed) {
-        //armRotateMotor.set(speed);
+        if(armRotateEnc.getPosition() > kMaxPosition || armRotateEnc.getPosition() < kMinPosition) {
+            //armRotateMotor.set(0);
+        } else {
+            //armRotateMotor.set(speed);
+        }
     }
 }
 

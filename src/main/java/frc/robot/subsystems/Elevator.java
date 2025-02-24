@@ -16,8 +16,6 @@ import static frc.robot.Constants.DriveConstants.kMaxOutput;
 import static frc.robot.Constants.ElevatorConstants.*;
 import static frc.robot.RobotContainer.*;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -85,7 +83,7 @@ public class Elevator extends SubsystemBase {
     public void periodic() {
         // This method will be called once per scheduler run
         SmartDashboard.putNumber("Elev Leader Pos", getLeadPosition());
-        SmartDashboard.putNumber("Elev Follower Pos", getFollowerPosition()); 
+        SmartDashboard.putNumber("Elev Follower Pos", getFollowerPosition());
     }
 
     @Override
@@ -111,7 +109,7 @@ public class Elevator extends SubsystemBase {
             case 1: PIDcontroller.setReference(100, ControlType.kPosition); break;
             case 2: PIDcontroller.setReference(200, ControlType.kPosition); break;
         }
-        currentElevatorHeight = level; //TODO: Use currentElevatorHeight to limit driving speed and auto backspin coral.
+        currentElevatorHeight = level;
         System.out.println("Going to level " + level);
     }
 

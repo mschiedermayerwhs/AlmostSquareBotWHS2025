@@ -20,6 +20,8 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import frc.robot.Constants.CoralChuteConstants.*;
+
 public class CoralChute extends SubsystemBase {
     private SparkMax leftOutputMotor;
     private SparkMax rightOutputMotor;
@@ -29,13 +31,10 @@ public class CoralChute extends SubsystemBase {
         notInvertedConfig.inverted(false);
         SparkMaxConfig invertedConfig = new SparkMaxConfig();
         invertedConfig.inverted(true);
-        // intakeMotor = new SparkMax(6, MotorType.kBrushless);
-        //  intakeMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        // leftOutputMotor = new SparkMax(8, MotorType.kBrushless);
+        // leftOutputMotor = new SparkMax(kLeftOutputMotorPort, MotorType.kBrushless);
         //  leftOutputMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        // rightOutputMotor = new SparkMax(9, MotorType.kBrushless);
+        // rightOutputMotor = new SparkMax(kRightOutputMotorPort, MotorType.kBrushless);
         //  rightOutputMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 

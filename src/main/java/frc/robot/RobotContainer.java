@@ -82,6 +82,7 @@ public class RobotContainer {
 
     // Configure default commands
     m_driveSubsystem.setDefaultCommand(new TankDrive(() -> leftLimit.calculate(getLeftY()), () -> rightLimit.calculate(getRightY()), m_driveSubsystem));
+    //m_algaeGrabber.setDefaultCommand(new RunAlgaeArmMotor(m_algaeGrabber, () -> getLeftTrigger(), () -> getRightTrigger()));
 
     // Configure autonomous sendable chooser
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
@@ -128,36 +129,10 @@ public class RobotContainer {
    * it to a
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {   
-    // Create some buttons    
-    
-    /**
-    final POVButton pOVButton = new POVButton(xboxController, 0, 0);
-    pOVButton.onTrue(new EmptyCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-    final JoystickButton rightJoystickButton = new JoystickButton(xboxController,
-        XboxController.Button.kRightStick.value);
-    rightJoystickButton.onTrue(new EmptyCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-    final JoystickButton leftJoystickButton = new JoystickButton(xboxController,
-        XboxController.Button.kLeftStick.value);
-    leftJoystickButton.onTrue(new EmptyCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-    final JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kRightBumper.value);
-    rightBumper.onTrue(new EmptyCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-    final JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kLeftBumper.value);
-    leftBumper.onTrue(new EmptyCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    */
-
-    final JoystickButton startButton = new JoystickButton(xboxController, XboxController.Button.kStart.value);
-    startButton.whileTrue(new AdvanceCoral(m_coralChute).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-    // NOTE: This is where the control would swap if the coral is being advanced via
-    // a single press or a hold.
-    // startButton.onTrue(new AdvanceCoralInstant( m_coralChute
-    // ).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
+  private void configureButtonBindings() {
+    // Some old button bindings to drive a preset amount of time:
+    //leftBumper.onTrue( ( new TankDrive( () -> 0.2, () -> 0.2, m_driveSubsystem ).withInterruptBehavior(InterruptionBehavior.kCancelSelf) ).withTimeout(3) );
+    //bButton2.onTrue( m_driveSubsystem.goToSetpointCommand(100).withInterruptBehavior(InterruptionBehavior.kCancelSelf) );     
 
     /* https://docs.wpilib.org/en/stable/docs/software/wpilib-tools/robotbuilder/writing-code/robotbuilder-drive-tank.html 
     A common use case is to have a joystick that should drive some actuators that are part of a subsystem. 
@@ -165,32 +140,29 @@ public class RobotContainer {
     The idea is to create a command that, when scheduled, reads input from the joystick and calls a method that is created on the subsystem that drives the motors. 
     */
 
-    // Old back button
-    // final JoystickButton backButton = new JoystickButton(xboxController, XboxController.Button.kBack.value);
-    // backButton.onTrue(new EmptyCommand().withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-    //newer back button test from tankdrive test
-    final JoystickButton backButton = new JoystickButton(xboxController, XboxController.Button.kBack.value);
-    backButton.whileTrue(
-        new TankDrive(() -> 0.2, () -> 0.2, m_driveSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-    // added left bumper: drive for 3 seconds (another drive-wait-stop test)
+    // ALGAE GRABBER: Running the ball-grabber motors in one direction with the leftBumper and another with the rightBumper (speeds are preset)
     final JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kLeftBumper.value);
-    leftBumper.onTrue(
-        (new TankDrive(() -> 0.2, () -> 0.2, m_driveSubsystem).withInterruptBehavior(InterruptionBehavior.kCancelSelf)).withTimeout(3));
+    //leftBumper.whileTrue(new RunBallGrabber(m_algaeGrabber, true).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     
-    final JoystickButton yButton = new JoystickButton(xboxController, XboxController.Button.kY.value);
-    yButton.onTrue(new ChangeElevatorLevel(2, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    final JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kRightBumper.value);
+    //rightBumper.whileTrue(new RunBallGrabber(m_algaeGrabber, false).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
+    // ELEVATOR: Pressing an AXYB button moves the elevator to level 0/1/2/3
+    final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
+    aButton.onTrue(new ChangeElevatorLevel(0, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     final JoystickButton xButton = new JoystickButton(xboxController, XboxController.Button.kX.value);
     xButton.onTrue(new ChangeElevatorLevel(1, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
-    final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
-    aButton.onTrue(new ChangeElevatorLevel(0, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-    //aButton.onTrue(new TestDriveWaitStopCmd(0.1, 0.1, 1.0, m_driveSubsystem));
+    final JoystickButton yButton = new JoystickButton(xboxController, XboxController.Button.kY.value);
+    yButton.onTrue(new ChangeElevatorLevel(2, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     final JoystickButton bButton2 = new JoystickButton(xboxController, XboxController.Button.kB.value);
-    bButton2.onTrue(m_driveSubsystem.goToSetpointCommand(100).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    bButton2.onTrue(new ChangeElevatorLevel(3, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
+    // CORAL CHUTE: Holding down the START button will advance the coral, with a backspin depending on the elevator height.
+    final JoystickButton startButton = new JoystickButton(xboxController, XboxController.Button.kStart.value);
+    //startButton.whileTrue(new AdvanceCoral(m_coralChute).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
   }
 
   public XboxController getXboxController() {
@@ -203,6 +175,14 @@ public class RobotContainer {
 
   public double getRightY() {
     return xboxController.getRightY();
+  }
+
+  public double getLeftTrigger() {
+    return xboxController.getLeftTriggerAxis();
+  }
+
+  public double getRightTrigger() {
+    return xboxController.getRightTriggerAxis();
   }
 
   /**
