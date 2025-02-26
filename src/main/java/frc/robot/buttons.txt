@@ -4,6 +4,8 @@ How the button bindings for the controller are currently set up:
     START button: Run the CoralChute, with an auto backspin at trough level
     Left and right triggers: Controlling the Algae arm (difference taken, left=+, right=-)
     Left and right bumpers: Controlling the Ball Grabbing motor (one is +, other -, constant speed)
+*   BACK button: Slowly raise the elevator, use to determine encoder position
+*   DPAD: Slowly control the robot one side at a time (in either direction), using the corner buttons
 
 The default command for the DriveSubsystem is TankDrive using the joysticks.
 The default command for the AlgaeGrabber is RunAlgaeArmMotor using the triggers. (set up similarly to joysticks, w/o slew rate limiter)

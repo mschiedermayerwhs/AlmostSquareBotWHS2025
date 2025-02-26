@@ -12,33 +12,66 @@
 
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.*;
 
-public class AutonomousCommand extends Command {
+// This should be fine not being an InstantCommand because it will be 
+public class AutonomousCommand extends SequentialCommandGroup {
 
-    public AutonomousCommand() {
+    private final AlgaeGrabber m_algaeGrabber;
+    private final CoralChute m_coralChute;
+    private final Elevator m_elevator;
+    private final DriveSubsystem m_driveSubsystem;
 
+    public AutonomousCommand(AlgaeGrabber algaeGrabber, CoralChute coralChute, Elevator elevator, DriveSubsystem driveSubsystem, Integer key) {
+        m_algaeGrabber = algaeGrabber;
+        m_coralChute = coralChute;
+        m_elevator = elevator;
+        m_driveSubsystem = driveSubsystem;
+
+        addRequirements(m_coralChute, m_elevator, m_driveSubsystem); // add AlgaeGrabber if needed?
+
+        System.out.println("Running autonomous command");
+
+        if(key == 1) {
+            System.out.println("Going to score coral");
+            addCommands(
+
+            )
+            ;
+        } else if(key == 2) {
+            System.out.println("Going to leave starting line");
+            addCommands(
+                
+            );
+        }
+    }
+
+    public AutonomousCommand(AlgaeGrabber algaeGrabber, CoralChute coralChute, Elevator elevator, DriveSubsystem driveSubsystem) {
+        this(algaeGrabber, coralChute, elevator, driveSubsystem, 0);
     }
 
     // Called when the command is initially scheduled.
-    @Override
-    public void initialize() {
-    }
+    // @Override
+    // public void initialize() {
+    // }
 
-    // Called every time the scheduler runs while the command is scheduled.
-    @Override
-    public void execute() {
-    }
+    // // Called every time the scheduler runs while the command is scheduled.
+    // @Override
+    // public void execute() {
+        
+    // }
 
-    // Called once the command ends or is interrupted.
-    @Override
-    public void end(boolean interrupted) {
-    }
+    // // Called once the command ends or is interrupted.
+    // @Override
+    // public void end(boolean interrupted) {
+    // }
 
-    // Returns true when the command should end.
-    @Override
-    public boolean isFinished() {
-        return false;
-    }
+    // // Returns true when the command should end.
+    // @Override
+    // public boolean isFinished() {
+    //     return false;
+    // }
 
     @Override
     public boolean runsWhenDisabled() {

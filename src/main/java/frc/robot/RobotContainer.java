@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-//import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -66,7 +66,7 @@ public class RobotContainer {
     // Smartdashboard Subsystems
 
     // SmartDashboard Buttons
-    SmartDashboard.putData("AutonomousCommand", new AutonomousCommand());
+    SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem));
     //SmartDashboard.putData("TankDrive: stopped", new TankDrive(() -> 0.0, () -> 0.0, m_driveSubsystem));
     SmartDashboard.putData("Reset Drive Encoders", m_driveSubsystem.resetEncodersCommand());
     SmartDashboard.putData("Reset Elevator Encoders", m_elevator.resetEncodersCommand());
@@ -85,7 +85,9 @@ public class RobotContainer {
     //m_algaeGrabber.setDefaultCommand(new RunAlgaeArmMotor(m_algaeGrabber, () -> getLeftTrigger(), () -> getRightTrigger()));
 
     // Configure autonomous sendable chooser
-    m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand());
+    m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem));
+    m_chooser.addOption("Score coral", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem,1));
+    m_chooser.addOption("Leave starting line", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem, 2));
     // m_chooser.setDefaultOption("$command.getName()", new ${name.replace(' ',
     // '')}( m_${name.substring(0,1).toLowerCase()}${name.substring(1).replace(' ',
     // '')} ));
@@ -94,7 +96,7 @@ public class RobotContainer {
 
     SmartDashboard.putData("Auto Mode", m_chooser);
 
-     CommandScheduler.getInstance()
+    CommandScheduler.getInstance()
         .onCommandInitialize(
             command ->
                 Shuffleboard.addEventMarker(
@@ -163,7 +165,25 @@ public class RobotContainer {
     // CORAL CHUTE: Holding down the START button will advance the coral, with a backspin depending on the elevator height.
     final JoystickButton startButton = new JoystickButton(xboxController, XboxController.Button.kStart.value);
     //startButton.whileTrue(new AdvanceCoral(m_coralChute).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
+    // ELEVATOR TESTING: Slowly run the elevator motor to set up encoders. (switch direction if necessary)
+    final JoystickButton backButton = new JoystickButton(xboxController, XboxController.Button.kBack.value);
+    backButton.whileTrue(new RunElevator(() -> 0.01, m_elevator));
+
+    // DRIVE TESTING: Use the d-pad to control the robot very slowly, in order to set encoders.
+    final POVButton upLeftPOVButton = new POVButton(xboxController, 315);
+    upLeftPOVButton.whileTrue(new TankDrive(() -> 0.01, () -> 0, m_driveSubsystem));
+
+    final POVButton upRightPOVButton = new POVButton(xboxController, 45);
+    upRightPOVButton.whileTrue(new TankDrive(() -> 0, () -> 0.01, m_driveSubsystem));
+
+    final POVButton downLeftPOVButton = new POVButton(xboxController, 225);
+    downLeftPOVButton.whileTrue(new TankDrive(() -> -0.01, () -> 0, m_driveSubsystem));
+
+    final POVButton downRightPOVButton = new POVButton(xboxController, 135);
+    downRightPOVButton.whileTrue(new TankDrive(() -> 0, () -> -0.01, m_driveSubsystem));
   }
+
 
   public XboxController getXboxController() {
     return xboxController;
@@ -191,6 +211,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    System.out.println("getting autonomous command");
     // The selected command will be run in autonomous
     return m_chooser.getSelected();
   }

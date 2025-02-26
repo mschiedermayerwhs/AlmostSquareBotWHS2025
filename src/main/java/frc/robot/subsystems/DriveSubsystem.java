@@ -174,6 +174,22 @@ public class DriveSubsystem extends SubsystemBase {
         return run(() -> goToSetpoint(point));
     }
 
+    //TODO: To control the robot during autonomous, we will need to be able to rotate by a certain amount. This will require experimentation.
+    public void goToRotate(double degrees) {
+        double curPosLeft = frontLeftEnc.getPosition();
+        double curPosRight = frontRightEnc.getPosition();
+
+        setpointLeft = curPosLeft + 0;
+        setpointRight = curPosRight + 0;
+
+        System.out.println("[" + Timer.getFPGATimestamp() + "] Left Motor Current Pos: " + curPosLeft + ". SetPoint: " + setpointLeft);
+        System.out.println("Right Motor Current Pos: " + curPosRight + ". SetPoint: " + setpointRight);
+    }
+
+    public Command goToRotateCommand(double degrees) {
+        return run(() -> goToRotate(degrees));
+    }
+
     public void setLeftMotor(double speed) {
         frontLeftMotor.set(speed);
     }

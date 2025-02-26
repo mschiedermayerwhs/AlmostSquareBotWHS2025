@@ -1,0 +1,22 @@
+We should be able to start our robot from anywhere on the Robot Starting Line. This means depending on our Alliance members we could give the robot a straight shot to the reef.
+It's about 88" to the reef from the starting line. There are several ways we could program our autonomous w/o AprilTags:
+
+Straight shot to coral:
+    DriveSubsystem.goToSetpointCommand(x);
+    ChangeElevatorLevel(2 or 3, if we want more points);
+    AdvanceCoral().withTimeout(x); // decide on # of seconds for coral to launch
+
+If we need to reach the pipes that are not directly opposite the starting line, we could do it with only three movement commands:
+
+Coral is on another side:
+    DriveSubsystem.goToSetpointCommand(x);
+    DriveSubsystem.goToRotateCommand(x);
+    DriveSubsystem.goToSetpointCommand(y);
+    ChangeElevatorLevel(2 or 3);
+    AdvanceCoral().withTimeout(x);
+
+Autonomous is only 15 seconds long, meaning that it would be prohibitive to try to score more coral (probably). We could try to position the robot near the coral station
+to get a faster start in teleop.
+
+Just going a set distance to leave the start line:
+    DriveSubsystem.goToSetpointCommand(x);
