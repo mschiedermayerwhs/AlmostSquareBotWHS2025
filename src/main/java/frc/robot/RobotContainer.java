@@ -169,6 +169,7 @@ public class RobotContainer {
     // ELEVATOR TESTING: Slowly run the elevator motor to set up encoders. (switch direction if necessary)
     final JoystickButton backButton = new JoystickButton(xboxController, XboxController.Button.kBack.value);
     backButton.whileTrue(new RunElevator(() -> 0.01, m_elevator));
+    startButton.whileTrue(new RunElevator(() -> -0.01, m_elevator));
 
     // DRIVE TESTING: Use the d-pad to control the robot very slowly, in order to set encoders.
     final POVButton upLeftPOVButton = new POVButton(xboxController, 315);

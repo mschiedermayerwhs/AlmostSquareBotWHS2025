@@ -89,14 +89,13 @@ public class Elevator extends SubsystemBase {
     @Override
     public void simulationPeriodic() {
         // This method will be called once per scheduler run when in simulation
-
     }
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     // One speed for two motors moving in tandem
     public void setElevatorMotor(double speed) {
-        //leadElevatorMotor.set(speed); // the other motor should follow
+        leadElevatorMotor.set(speed); // the other motor should follow
     }
 
     // My biggest concern is making sure this method is only executed one time for a button press
