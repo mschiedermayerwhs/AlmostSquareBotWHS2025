@@ -11,3 +11,7 @@ The default command for the DriveSubsystem is TankDrive using the joysticks.
 The default command for the AlgaeGrabber is RunAlgaeArmMotor using the triggers. (set up similarly to joysticks, w/o slew rate limiter)
 
 Right now, the elevators and tank drive are the only parts of the code that are connected to their subsystems; CoralChute/AlgaeGrabber are not set up, no CAN IDs, all bindings commented out.
+
+3/4 NEW TESTING:
+BACK button: Run elevator UP
+START button: Run elevator DOWN

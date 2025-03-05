@@ -45,7 +45,7 @@ public class RobotContainer {
   public static int currentElevatorHeight = 0;
 
   // The robot's subsystems
-  public final AlgaeGrabber m_algaeGrabber = new AlgaeGrabber();
+  // public final AlgaeGrabber m_algaeGrabber = new AlgaeGrabber();
   public final CoralChute m_coralChute = new CoralChute();
   public final Elevator m_elevator = new Elevator();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
@@ -66,7 +66,7 @@ public class RobotContainer {
     // Smartdashboard Subsystems
 
     // SmartDashboard Buttons
-    SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem));
+    // SmartDashboard.putData("AutonomousCommand", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem));
     //SmartDashboard.putData("TankDrive: stopped", new TankDrive(() -> 0.0, () -> 0.0, m_driveSubsystem));
     SmartDashboard.putData("Reset Drive Encoders", m_driveSubsystem.resetEncodersCommand());
     SmartDashboard.putData("Reset Elevator Encoders", m_elevator.resetEncodersCommand());
@@ -85,9 +85,9 @@ public class RobotContainer {
     //m_algaeGrabber.setDefaultCommand(new RunAlgaeArmMotor(m_algaeGrabber, () -> getLeftTrigger(), () -> getRightTrigger()));
 
     // Configure autonomous sendable chooser
-    m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem));
-    m_chooser.addOption("Score coral", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem,1));
-    m_chooser.addOption("Leave starting line", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem, 2));
+    // m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem));
+    // m_chooser.addOption("Score coral", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem,1));
+    // m_chooser.addOption("Leave starting line", new AutonomousCommand(m_algaeGrabber, m_coralChute, m_elevator, m_driveSubsystem, 2));
     // m_chooser.setDefaultOption("$command.getName()", new ${name.replace(' ',
     // '')}( m_${name.substring(0,1).toLowerCase()}${name.substring(1).replace(' ',
     // '')} ));
@@ -168,21 +168,21 @@ public class RobotContainer {
 
     // ELEVATOR TESTING: Slowly run the elevator motor to set up encoders. (switch direction if necessary)
     final JoystickButton backButton = new JoystickButton(xboxController, XboxController.Button.kBack.value);
-    backButton.whileTrue(new RunElevator(() -> 0.01, m_elevator));
-    startButton.whileTrue(new RunElevator(() -> -0.01, m_elevator));
+    backButton.whileTrue(new RunElevator(() -> 0.1, m_elevator));
+    startButton.whileTrue(new RunElevator(() -> -0.1, m_elevator));
 
     // DRIVE TESTING: Use the d-pad to control the robot very slowly, in order to set encoders.
     final POVButton upLeftPOVButton = new POVButton(xboxController, 315);
-    upLeftPOVButton.whileTrue(new TankDrive(() -> 0.01, () -> 0, m_driveSubsystem));
+    upLeftPOVButton.whileTrue(new TankDrive(() -> 0.1, () -> 0, m_driveSubsystem));
 
     final POVButton upRightPOVButton = new POVButton(xboxController, 45);
-    upRightPOVButton.whileTrue(new TankDrive(() -> 0, () -> 0.01, m_driveSubsystem));
+    upRightPOVButton.whileTrue(new TankDrive(() -> 0, () -> 0.1, m_driveSubsystem));
 
     final POVButton downLeftPOVButton = new POVButton(xboxController, 225);
-    downLeftPOVButton.whileTrue(new TankDrive(() -> -0.01, () -> 0, m_driveSubsystem));
+    downLeftPOVButton.whileTrue(new TankDrive(() -> -0.1, () -> 0, m_driveSubsystem));
 
     final POVButton downRightPOVButton = new POVButton(xboxController, 135);
-    downRightPOVButton.whileTrue(new TankDrive(() -> 0, () -> -0.01, m_driveSubsystem));
+    downRightPOVButton.whileTrue(new TankDrive(() -> 0, () -> -0.1, m_driveSubsystem));
   }
 
 

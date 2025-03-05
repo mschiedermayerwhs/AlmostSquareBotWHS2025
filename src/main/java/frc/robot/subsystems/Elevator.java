@@ -66,10 +66,10 @@ public class Elevator extends SubsystemBase {
 
         // RIGHT IS FOLLOWER
         SparkMaxConfig rightFollowInvertConfig = new SparkMaxConfig();
+        rightFollowInvertConfig.follow(kElevatorDriveLeftPort, true);
         rightFollowInvertConfig.inverted(true);
-        rightFollowInvertConfig.follow(kElevatorDriveLeftPort);
         followerElevatorMotor = new SparkMax(kElevatorDriveRightPort, MotorType.kBrushless);
-        // followerElevatorMotor.configure(rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        followerElevatorMotor.configure(rightFollowInvertConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         leadMotorEnc = leadElevatorMotor.getEncoder();
         PIDcontroller = leadElevatorMotor.getClosedLoopController();
@@ -95,6 +95,7 @@ public class Elevator extends SubsystemBase {
     // here. Call these from Commands.
     // One speed for two motors moving in tandem
     public void setElevatorMotor(double speed) {
+        System.out.println("Actually setting the motors to " + speed);
         leadElevatorMotor.set(speed); // the other motor should follow
     }
 
