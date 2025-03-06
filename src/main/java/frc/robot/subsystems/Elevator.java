@@ -68,6 +68,8 @@ public class Elevator extends SubsystemBase {
         SparkMaxConfig rightFollowInvertConfig = new SparkMaxConfig();
         rightFollowInvertConfig.follow(kElevatorDriveLeftPort, true);
         rightFollowInvertConfig.inverted(true);
+        rightFollowInvertConfig.encoder.positionConversionFactor(kElevatorEncoderConversionFactor);
+        rightFollowInvertConfig.encoder.velocityConversionFactor(kElevatorEncoderConversionFactor);
         followerElevatorMotor = new SparkMax(kElevatorDriveRightPort, MotorType.kBrushless);
         followerElevatorMotor.configure(rightFollowInvertConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -95,8 +97,9 @@ public class Elevator extends SubsystemBase {
     // here. Call these from Commands.
     // One speed for two motors moving in tandem
     public void setElevatorMotor(double speed) {
-        System.out.println("Actually setting the motors to " + speed);
-        leadElevatorMotor.set(speed); // the other motor should follow
+        if(leadMotorEnc.getPosition() > minHeight && leadMotorEnc.getPosition() < maxHeight) {
+            leadElevatorMotor.set(speed); // the other motor should follow
+        }
     }
 
     // My biggest concern is making sure this method is only executed one time for a button press
@@ -105,9 +108,10 @@ public class Elevator extends SubsystemBase {
         // then setReference to set the new setpoint
         // requires tuned conversion factors for the encoder config, and also use the factors here to convert
         switch(level) {
-            case 0: PIDcontroller.setReference(0, ControlType.kPosition); break; // units?
-            case 1: PIDcontroller.setReference(100, ControlType.kPosition); break;
-            case 2: PIDcontroller.setReference(200, ControlType.kPosition); break;
+            case 0: PIDcontroller.setReference(lvl0Height, ControlType.kPosition); break; // TODO: Determine necessary elevator heights, reset encoders as necessary.
+            case 1: PIDcontroller.setReference(lvl1Height, ControlType.kPosition); break;
+            case 2: PIDcontroller.setReference(lvl2Height, ControlType.kPosition); break;
+            case 3: PIDcontroller.setReference(lvl3Height, ControlType.kPosition); break;
         }
         currentElevatorHeight = level;
         System.out.println("Going to level " + level);

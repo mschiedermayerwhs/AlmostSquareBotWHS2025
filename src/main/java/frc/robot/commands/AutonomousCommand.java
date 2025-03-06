@@ -18,13 +18,11 @@ import frc.robot.subsystems.*;
 // This should be fine not being an InstantCommand because it will be 
 public class AutonomousCommand extends SequentialCommandGroup {
 
-    private final AlgaeGrabber m_algaeGrabber;
     private final CoralChute m_coralChute;
     private final Elevator m_elevator;
     private final DriveSubsystem m_driveSubsystem;
 
-    public AutonomousCommand(AlgaeGrabber algaeGrabber, CoralChute coralChute, Elevator elevator, DriveSubsystem driveSubsystem, Integer key) {
-        m_algaeGrabber = algaeGrabber;
+    public AutonomousCommand(CoralChute coralChute, Elevator elevator, DriveSubsystem driveSubsystem, Integer key) {
         m_coralChute = coralChute;
         m_elevator = elevator;
         m_driveSubsystem = driveSubsystem;
@@ -47,8 +45,8 @@ public class AutonomousCommand extends SequentialCommandGroup {
         }
     }
 
-    public AutonomousCommand(AlgaeGrabber algaeGrabber, CoralChute coralChute, Elevator elevator, DriveSubsystem driveSubsystem) {
-        this(algaeGrabber, coralChute, elevator, driveSubsystem, 0);
+    public AutonomousCommand(CoralChute coralChute, Elevator elevator, DriveSubsystem driveSubsystem) {
+        this(coralChute, elevator, driveSubsystem, 0);
     }
 
     // Called when the command is initially scheduled.
