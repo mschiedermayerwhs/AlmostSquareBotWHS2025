@@ -97,9 +97,7 @@ public class Elevator extends SubsystemBase {
     // here. Call these from Commands.
     // One speed for two motors moving in tandem
     public void setElevatorMotor(double speed) {
-        if(leadMotorEnc.getPosition() > minHeight && leadMotorEnc.getPosition() < maxHeight) {
-            leadElevatorMotor.set(speed); // the other motor should follow
-        }
+        leadElevatorMotor.set(speed); // the other motor should follow
     }
 
     // My biggest concern is making sure this method is only executed one time for a button press
@@ -124,7 +122,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public Command resetEncodersCommand() {
-        return run(() -> resetEncoders()).withTimeout(0.25);
+        return runOnce(() -> resetEncoders()).withTimeout(0.25);
     }
 
     public RelativeEncoder getLeadEncoder() {

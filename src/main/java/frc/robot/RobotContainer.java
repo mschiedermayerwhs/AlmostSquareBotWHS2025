@@ -144,6 +144,7 @@ public class RobotContainer {
 
     // ALGAE GRABBER: Running the ball-grabber motors in one direction with the leftBumper and another with the rightBumper (speeds are preset)
     final JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kLeftBumper.value);
+    leftBumper.onTrue(m_elevator.resetEncodersCommand());
     //leftBumper.whileTrue(new RunBallGrabber(m_algaeGrabber, true).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     
     final JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kRightBumper.value);
