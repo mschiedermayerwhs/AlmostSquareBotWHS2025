@@ -32,7 +32,7 @@ public class Constants {
        public static final double kDriveWheelsCircumference = 152.4 * Math.PI; //6 inch diam in mm 
        public static final double kDriveEncoderConversionFactor = kDriveGearRatio * kDriveWheelsCircumference / kTicksPerRevolution;
 
-       public static final double kMinOutput = -0.25;
+       public static final double kMinOutput = -0.25; // only used
        public static final double kMaxOutput = 0.25;
        public static final double kP = 0.0005;
        public static final double kI = 0.0;
@@ -49,11 +49,11 @@ public class Constants {
         public static final double kSprocketCircumference = 45*Math.PI; // stick with 45 mm diam
         public static final double kElevatorEncoderConversionFactor = kGearRatio * kSprocketCircumference / kTicksPerRevolution;
 
-        public static final double kP = 0.01;
+        public static final double kP = 0.01; //.01 is stable and sounds good, .02 has small oscillation sounds
         public static final double kI = 0.0;
         public static final double kD = 0.0;
-        public static final double kMinOutput = -0.25;
-        public static final double kMaxOutput = 0.25;
+        public static final double kMinOutput = -0.25; // slower going down because of gravity assist
+        public static final double kMaxOutput = 0.5;
 
         public static final double lvl0Height = 50;
         public static final double lvl1Height = 300;
