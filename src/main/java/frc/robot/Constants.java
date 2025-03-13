@@ -52,15 +52,15 @@ public class Constants {
         public static final double kP = 0.01; //.01 is stable and sounds good, .02 has small oscillation sounds
         public static final double kI = 0.0;
         public static final double kD = 0.0;
-        public static final double kMinOutput = -0.25; // slower going down because of gravity assist
-        public static final double kMaxOutput = 0.5;
+        public static final double kMinOutput = -0.5; // slower going down because of gravity assist
+        public static final double kMaxOutput = 1; // We dont have enough torque to utilize full speed
 
-        public static final double lvl0Height = 50;
-        public static final double lvl1Height = 300;
-        public static final double lvl2Height = 500;
-        public static final double lvl3Height = 850;
+        public static final double lvl0Height = 0; //checked good
+        public static final double lvl1Height = 310; //good
+        public static final double lvl2Height = 860; //good
+        public static final double lvl3Height = 1890; //good, as high as possible
         public static final double minHeight = 0;
-        public static final double maxHeight = 1000;
+        public static final double maxHeight = 1900;
     }
 
     // Double check constants for AlgaeGrabber Motors
@@ -70,7 +70,7 @@ public class Constants {
 
         public static final int kTicksPerRevolution = 42;     // default for Rev Neo
         public static final double kGearRatio = 12;
-        public static final double kSprocketCircumference = 50;
+        public static final double kSprocketCircumference = 45 * Math.PI;
         public static final double kElevatorEncoderConversionFactor = kGearRatio * kSprocketCircumference / kTicksPerRevolution;
 
         public static final double kP = .0001;

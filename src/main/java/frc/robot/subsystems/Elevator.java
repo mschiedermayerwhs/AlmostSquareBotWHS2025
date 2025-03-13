@@ -37,17 +37,6 @@ public class Elevator extends SubsystemBase {
     RelativeEncoder followerMotorEnc;
     
     /**
-    *https://docs.wpilib.org/en/stable/docs/software/kinematics-and-odometry/differential-drive-odometry.html
-    * https://docs.wpilib.org/en/stable/docs/software/kinematics-and-odometry/differential-drive-kinematics.html
-    * https://docs.wpilib.org/en/stable/docs/software/commandbased/pid-subsystems-commands.html
-    * https://github.com/REVrobotics/SPARK-MAX-Examples/blob/master/Java/Velocity%20Closed%20Loop%20Control/src/main/java/frc/robot/Robot.java#L54
-    * https://docs.revrobotics.com/revlib/spark/closed-loop
-
-    I think this is a better option as it is meant to work well with command based.  I think we need to use 
-    wpilib Encoder instead fo the rev ones though..
-
-    https://docs.wpilib.org/en/stable/docs/software/advanced-controls/controllers/pidcontroller.html
-    https://docs.wpilib.org/en/stable/docs/software/commandbased/pid-subsystems-commands.html#pid-control-in-command-based
     */
     public Elevator() {
         // LEFT IS LEAD
