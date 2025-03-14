@@ -52,8 +52,8 @@ public class Constants {
         public static final double kP = 0.01; //.01 is stable and sounds good, .02 has small oscillation sounds
         public static final double kI = 0.0;
         public static final double kD = 0.0;
-        public static final double kMinOutput = -0.5; // slower going down because of gravity assist
-        public static final double kMaxOutput = 0.75; // We dont have enough torque to utilize full speed
+        public static final double kMinOutput = -0.5;
+        public static final double kMaxOutput = 0.5; 
 
         public static final double lvl0Height = 0; //checked good
         public static final double lvl1Height = 310; //good
@@ -81,6 +81,9 @@ public class Constants {
 
         public static final double kMinPosition = 0;
         public static final double kMaxPosition = 1;
+
+        public static final double kArmDownPos = 0;
+        public static final double karmUpPos = 100;  // TODO tune this
     }
 
     public static final class CoralChuteConstants {
