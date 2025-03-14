@@ -83,7 +83,7 @@ public class Constants {
         public static final double kMaxPosition = 1;
 
         public static final double kArmDownPos = 0;
-        public static final double karmUpPos = 100;  // TODO tune this
+        public static final double kArmUpPos = 100;  // TODO tune this
     }
 
     public static final class CoralChuteConstants {
