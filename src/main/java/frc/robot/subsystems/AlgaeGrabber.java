@@ -20,6 +20,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.RelativeEncoder;
 
@@ -37,16 +38,25 @@ public class AlgaeGrabber extends SubsystemBase {
     RelativeEncoder armRotateEnc;
 
     public AlgaeGrabber() {
-        SparkMaxConfig notInvertedConfig = new SparkMaxConfig();
-        notInvertedConfig.inverted(false);
-        SparkMaxConfig invertedConfig = new SparkMaxConfig();
-        invertedConfig.inverted(true);
+        SparkMaxConfig ballGrabberConfig = new SparkMaxConfig();
+        // ballGrabberConfig.inverted(true); need to test if this needs inverting
+        ballGrabberConfig.inverted(false);
+        ballGrabberMotor = new SparkMax(kBallGrabberMotorPort, MotorType.kBrushless);
+        ballGrabberMotor.configure(ballGrabberConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        // ballGrabberMotor = new SparkMax(kBallGrabberMotorPort, MotorType.kBrushless);
-        // ballGrabberMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        SparkMaxConfig armRotateConfig = new SparkMaxConfig();
+        armRotateConfig.inverted(false);
+        armRotateConfig.closedLoop
+            .p(kP)
+            .i(kI)
+            .d(kD)
+            .outputRange(kMinOutput, kMaxOutput)
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+        armRotateConfig.encoder.positionConversionFactor(kArmRotateConverionFactor);
+        //shouldnt need velocity conversion because we arent using setpoint for velocity
 
-        // armRotateMotor = new SparkMax(kArmRotateMotorPort, MotorType.kBrushless);
-        // armRotateMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        armRotateMotor = new SparkMax(kArmRotateMotorPort, MotorType.kBrushless);
+        armRotateMotor.configure(armRotateConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         armRotateEnc = armRotateMotor.getEncoder();
         PIDcontroller = armRotateMotor.getClosedLoopController();

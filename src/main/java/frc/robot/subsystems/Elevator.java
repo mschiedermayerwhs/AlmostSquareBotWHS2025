@@ -12,10 +12,10 @@
 
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.DriveConstants.kMaxOutput;
 import static frc.robot.Constants.ElevatorConstants.*;
 import static frc.robot.RobotContainer.*;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -32,6 +32,8 @@ public class Elevator extends SubsystemBase {
     private SparkMax leadElevatorMotor;
     private SparkMax followerElevatorMotor;
     private SparkClosedLoopController PIDcontroller;
+
+    private DigitalInput limitSwitch = new DigitalInput(9);
 
     RelativeEncoder leadMotorEnc;
     RelativeEncoder followerMotorEnc;
@@ -75,6 +77,7 @@ public class Elevator extends SubsystemBase {
         // This method will be called once per scheduler run
         SmartDashboard.putNumber("Elev Leader Pos", getLeadPosition());
         SmartDashboard.putNumber("Elev Follower Pos", getFollowerPosition());
+        SmartDashboard.putBoolean("LimitSwitch", limitSwitch.get());
     }
 
     @Override

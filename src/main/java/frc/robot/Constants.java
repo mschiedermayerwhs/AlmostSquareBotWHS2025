@@ -53,7 +53,7 @@ public class Constants {
         public static final double kI = 0.0;
         public static final double kD = 0.0;
         public static final double kMinOutput = -0.5; // slower going down because of gravity assist
-        public static final double kMaxOutput = 1; // We dont have enough torque to utilize full speed
+        public static final double kMaxOutput = 0.75; // We dont have enough torque to utilize full speed
 
         public static final double lvl0Height = 0; //checked good
         public static final double lvl1Height = 310; //good
@@ -69,9 +69,9 @@ public class Constants {
         public static final int kBallGrabberMotorPort = 8;
 
         public static final int kTicksPerRevolution = 42;     // default for Rev Neo
-        public static final double kGearRatio = 12;
-        public static final double kSprocketCircumference = 45 * Math.PI;
-        public static final double kElevatorEncoderConversionFactor = kGearRatio * kSprocketCircumference / kTicksPerRevolution;
+        public static final double kArmRotateGearRatio = 12;
+        public static final double kArmRotateSprocketCircumference = 45 * Math.PI;
+        public static final double kArmRotateConverionFactor = kArmRotateGearRatio * kArmRotateSprocketCircumference / kTicksPerRevolution;
 
         public static final double kP = .0001;
         public static final double kI = 0.0;
