@@ -166,11 +166,6 @@ public class RobotContainer {
     // CORAL CHUTE: Holding down the START button will advance the coral, with a backspin depending on the elevator height.
     final JoystickButton startButton = new JoystickButton(xboxController, XboxController.Button.kStart.value);
     //startButton.whileTrue(new AdvanceCoral(m_coralChute).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-    // ELEVATOR TESTING: Slowly run the elevator motor to set up encoders. (switch direction if necessary)
-    final JoystickButton backButton = new JoystickButton(xboxController, XboxController.Button.kBack.value);
-    backButton.whileTrue(new RunElevator(() -> 0.1, m_elevator));
-    startButton.whileTrue(new RunElevator(() -> -0.1, m_elevator));
   }
 
 

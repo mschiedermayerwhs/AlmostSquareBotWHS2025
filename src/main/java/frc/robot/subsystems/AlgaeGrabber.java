@@ -84,10 +84,20 @@ public class AlgaeGrabber extends SubsystemBase {
     }
 
     public void setArmRotateMotor(double speed) {
-        if(armRotateEnc.getPosition() > kMaxPosition || armRotateEnc.getPosition() < kMinPosition) {
+        if(armRotateEnc.getPosition() >= kMaxPosition || armRotateEnc.getPosition() <= kMinPosition) {
             //armRotateMotor.set(0);
         } else {
-            //armRotateMotor.set(speed);
+            if(armRotateEnc.getPosition() >= kMaxPosition) {
+                // algae arm is too far up
+                if(speed < 0) {
+                    //armRotateMotor.set(speed);
+                }
+            } else {
+                // algae arm is too far down
+                if(speed > 0) {
+                    //armRotateMotor.set(speed);
+                }
+            }
         }
     }
 }

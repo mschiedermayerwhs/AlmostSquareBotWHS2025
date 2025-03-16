@@ -161,8 +161,7 @@ public class DriveSubsystem extends SubsystemBase {
         setpointRight = curPosRight + point;
         System.out.println("[" + Timer.getFPGATimestamp() + "] Left Motor Current Pos: " + curPosLeft + ". SetPoint: " + setpointLeft);
         System.out.println("Right Motor Current Pos: " + curPosRight + ". SetPoint: " + setpointRight);
-        // TODO set different setpoint for left and right.  May need to find what current position is
-        // Because positive 1000 should be 1 meter forward, but the setpoiint is 1000 higher than current position
+
         //setpoint = point;
         // System.out.println("setting setpoint...");
         //PIDcontrollerLeft.setReference(setpointLeft, ControlType.kPosition);
@@ -175,6 +174,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     //TODO: To control the robot during autonomous, we will need to be able to rotate by a certain amount. This will require experimentation.
+    // we may be able to use differentialDrive.arcadeDrive  to set a specific rotation.
     public void goToRotate(double degrees) {
         double curPosLeft = frontLeftEnc.getPosition();
         double curPosRight = frontRightEnc.getPosition();

@@ -27,7 +27,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
         m_elevator = elevator;
         m_driveSubsystem = driveSubsystem;
 
-        addRequirements(m_coralChute, m_elevator, m_driveSubsystem); // add AlgaeGrabber if needed?
+        addRequirements(m_coralChute, m_elevator, m_driveSubsystem);
 
         System.out.println("Running autonomous command");
 

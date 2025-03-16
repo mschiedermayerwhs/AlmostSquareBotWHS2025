@@ -36,6 +36,8 @@ public class AdvanceCoral extends Command {
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        m_coralChute.setLeftOutputMotor(0);
+        m_coralChute.setRightOutputMotor(0);
     }
 
     // Returns true when the command should end.
