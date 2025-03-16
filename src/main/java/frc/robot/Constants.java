@@ -69,11 +69,11 @@ public class Constants {
         public static final int kBallGrabberMotorPort = 8;
 
         public static final int kTicksPerRevolution = 42;     // default for Rev Neo
-        public static final double kArmRotateGearRatio = 12;
+        public static final double kArmRotateGearRatio = 80; // gearbox is 80:1
         public static final double kArmRotateSprocketCircumference = 45 * Math.PI;
         public static final double kArmRotateConverionFactor = kArmRotateGearRatio * kArmRotateSprocketCircumference / kTicksPerRevolution;
 
-        public static final double kP = .0001;
+        public static final double kP = .001;
         public static final double kI = 0.0;
         public static final double kD = 0.0;
         public static final double kMinOutput = -0.25;
@@ -83,6 +83,7 @@ public class Constants {
         public static final double kMaxPosition = 1;
 
         public static final double kArmDownPos = 0;
+        public static final double kArmMidPos = 50;
         public static final double kArmUpPos = 100;  // TODO tune this
     }
 

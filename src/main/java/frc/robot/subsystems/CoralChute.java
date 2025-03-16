@@ -27,10 +27,11 @@ public class CoralChute extends SubsystemBase {
     private SparkMax rightOutputMotor;
 
     public CoralChute() {
-        SparkMaxConfig notInvertedConfig = new SparkMaxConfig();
-        notInvertedConfig.inverted(false);
-        SparkMaxConfig invertedConfig = new SparkMaxConfig();
-        invertedConfig.inverted(true);
+        SparkMaxConfig leftConfig = new SparkMaxConfig();
+        leftConfig.inverted(false);
+        
+        SparkMaxConfig rightConfig = new SparkMaxConfig();
+        rightConfig.inverted(true);
         // leftOutputMotor = new SparkMax(kLeftOutputMotorPort, MotorType.kBrushless);
         //  leftOutputMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
