@@ -79,12 +79,12 @@ public class Constants {
         public static final double kMinOutput = -0.25;
         public static final double kMaxOutput = 0.25;
 
-        public static final double kMinPosition = -100;
+        public static final double kMinPosition = 0;
         public static final double kMaxPosition = 100;
 
         public static final double kArmDownPos = 0;
-        public static final double kArmMidPos = 50;
-        public static final double kArmUpPos = 100;  // TODO tune this
+        public static final double kArmMidPos = 3000;
+        public static final double kArmUpPos = 8500;  // TODO tune this
     }
 
     public static final class CoralChuteConstants {

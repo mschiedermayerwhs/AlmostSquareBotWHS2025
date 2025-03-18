@@ -6,13 +6,13 @@ import frc.robot.subsystems.AlgaeGrabber;
 public class RunBallGrabber extends Command {
 
     private final AlgaeGrabber m_algaeGrabber;
-    private boolean m_forward;
+    private double m_speed;
 
-    public RunBallGrabber(AlgaeGrabber algaeGrabber, boolean forward) {
+    public RunBallGrabber(AlgaeGrabber algaeGrabber, double speed) {
         m_algaeGrabber = algaeGrabber;
         addRequirements(m_algaeGrabber);
 
-        m_forward = forward;
+        m_speed = speed;
     }
 
     // Called when the command is initially scheduled.
@@ -23,16 +23,13 @@ public class RunBallGrabber extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if(m_forward) {
-            m_algaeGrabber.setBallGrabberMotor(0.5); // TODO: Direction and speed of ball grabber motor.
-        } else {
-            m_algaeGrabber.setBallGrabberMotor(-0.5);
-        }
+        m_algaeGrabber.setBallGrabberMotor(m_speed);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        m_algaeGrabber.setBallGrabberMotor(0);
     }
 
     // Returns true when the command should end.

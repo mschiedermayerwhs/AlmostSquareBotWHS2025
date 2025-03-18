@@ -44,6 +44,7 @@ public class RobotContainer {
   private static RobotContainer m_robotContainer = new RobotContainer();
 
   public static int currentElevatorHeight = 0;
+  public static int currentAlgaeArmHeight = 0;
 
   // The robot's subsystems
   public final AlgaeGrabber m_algaeGrabber = new AlgaeGrabber();
@@ -71,6 +72,7 @@ public class RobotContainer {
     SmartDashboard.putData("TankDrive: stopped", new TankDrive(() -> 0.0, () -> 0.0, m_driveSubsystem));
     SmartDashboard.putData("Reset Drive Encoders", m_driveSubsystem.resetEncodersCommand());
     SmartDashboard.putData("Reset Elevator Encoders", m_elevator.resetEncodersCommand());
+    SmartDashboard.putData("Reset Algae Arm Encoders", m_algaeGrabber.resetEncodersCommand());
 
     // We need to figure out the value to pass to achieve those heights
     // SmartDashboard.putData("ChangeElevatorHeight", new ChangeElevatorHeight(
@@ -143,19 +145,19 @@ public class RobotContainer {
     The idea is to create a command that, when scheduled, reads input from the joystick and calls a method that is created on the subsystem that drives the motors. 
     */
 
-    // ALGAE GRABBER: Running the ball-grabber motors in one direction with the leftBumper and another with the rightBumper (speeds are preset)
+    // ALGAE GRABBER: Running the ball-grabber motors in one direction with the leftTrigger and another with the rightTrigger (speeds are preset)
     //                Also, using the triggers to rotate the arm.
     final JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kLeftBumper.value);
-    leftBumper.whileTrue(new RunBallGrabber(m_algaeGrabber, true).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    leftBumper.onTrue(new ChangeAlgaeArmLevel(false, m_algaeGrabber));
     
     final JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kRightBumper.value);
-    rightBumper.whileTrue(new RunBallGrabber(m_algaeGrabber, false).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
+    rightBumper.onTrue(new ChangeAlgaeArmLevel(true, m_algaeGrabber));
+    
     final JoystickButton leftTrigger = new JoystickButton(xboxController, XboxController.Axis.kLeftTrigger.value);
-    leftTrigger.whileTrue(new RunAlgaeArmMotor(m_algaeGrabber, getLeftTrigger(), getRightTrigger()));
+    leftTrigger.whileTrue(new RunBallGrabber(m_algaeGrabber, getLeftTrigger()).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     final JoystickButton rightTrigger = new JoystickButton(xboxController, XboxController.Axis.kRightTrigger.value);
-    rightTrigger.whileTrue(new RunAlgaeArmMotor(m_algaeGrabber, getLeftTrigger(), getRightTrigger()));
+    rightTrigger.whileTrue(new RunBallGrabber(m_algaeGrabber, -getRightTrigger()).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     // ELEVATOR: Pressing an AXYB button moves the elevator to level 0/1/2/3
     final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);

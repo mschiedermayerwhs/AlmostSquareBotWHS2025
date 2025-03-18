@@ -12,13 +12,13 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.SparkClosedLoopController;
 
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.*;
-import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -80,8 +80,12 @@ public class AlgaeGrabber extends SubsystemBase {
         armRotateEnc.setPosition(0);
     }
 
+    public Command resetEncodersCommand() {
+        return runOnce(() -> resetEncoders()).withTimeout(0.25);
+    }
+
     public void setBallGrabberMotor(double speed) {
-        //ballGrabberMotor.set(speed);
+        ballGrabberMotor.set(speed);
     }
 
     public void goToSetpoint(double setpoint) {
@@ -89,21 +93,7 @@ public class AlgaeGrabber extends SubsystemBase {
     }
 
     public void setArmRotateMotor(double speed) {
-        if(armRotateEnc.getPosition() >= kMaxPosition || armRotateEnc.getPosition() <= kMinPosition) {
-            armRotateMotor.set(0);
-        } else {
-            if(armRotateEnc.getPosition() >= kMaxPosition) {
-                // algae arm is too far up
-                if(speed < 0) {
-                    armRotateMotor.set(speed);
-                }
-            } else {
-                // algae arm is too far down
-                if(speed > 0) {
-                    armRotateMotor.set(speed);
-                }
-            }
-        }
+        armRotateMotor.set(speed);
     }
 }
 

@@ -55,12 +55,10 @@ public class CoralChute extends SubsystemBase {
     // here. Call these from Commands.
     public void setLeftOutputMotor(double speed) {
         leftOutputMotor.set(speed);
-        System.out.println("Setting left");
     }
 
     public void setRightOutputMotor(double speed) {
         rightOutputMotor.set(speed);
-        System.out.println("Setting right");
     }
 }
 

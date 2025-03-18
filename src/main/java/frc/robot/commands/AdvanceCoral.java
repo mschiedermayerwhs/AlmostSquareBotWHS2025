@@ -24,21 +24,18 @@ public class AdvanceCoral extends Command {
     @Override
     public void execute() {
         if(RobotContainer.currentElevatorHeight == 0) {
-            //m_coralChute.setLeftOutputMotor(0.4);
-            m_coralChute.setRightOutputMotor(0.5);
-            System.out.println("Applying backspin...");
+            m_coralChute.setLeftOutputMotor(0.2);
+            m_coralChute.setRightOutputMotor(0.25);
         } else {
-            //m_coralChute.setLeftOutputMotor(0.5);
-            m_coralChute.setRightOutputMotor(0.5);
-            System.out.println("Shooting straight...");
+            m_coralChute.setLeftOutputMotor(0.25);
+            m_coralChute.setRightOutputMotor(0.25);
         }
-        System.out.println("Advancing coral...");
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        //m_coralChute.setLeftOutputMotor(0);
+        m_coralChute.setLeftOutputMotor(0);
         m_coralChute.setRightOutputMotor(0);
         System.out.println("stopped");
     }

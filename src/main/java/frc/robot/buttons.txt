@@ -4,10 +4,8 @@ How the button bindings for the controller are currently set up:
     START button: Run the CoralChute, with an auto backspin at trough level
     Left and right triggers: Controlling the Algae arm (difference taken, left=+, right=-)
     Left and right bumpers: Controlling the Ball Grabbing motor (one is +, other -, constant speed)
-        * LEFT Bumper resets elevator encoders for now
 
 The default command for the DriveSubsystem is TankDrive using the joysticks.
-The default command for the AlgaeGrabber is ChangeArmLevel using the bumpers. (set up similarly to joysticks, w/o slew rate limiter)
 
 Right now, the elevators and tank drive are the only parts of the code that are connected to their subsystems; CoralChute/AlgaeGrabber are not set up/all bindings commented out.
 All Can IDs should be set up and labeled correctly.
