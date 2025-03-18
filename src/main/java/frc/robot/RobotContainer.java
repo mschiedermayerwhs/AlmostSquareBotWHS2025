@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import java.util.function.DoubleSupplier;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -45,7 +46,7 @@ public class RobotContainer {
   public static int currentElevatorHeight = 0;
 
   // The robot's subsystems
-  // public final AlgaeGrabber m_algaeGrabber = new AlgaeGrabber();
+  public final AlgaeGrabber m_algaeGrabber = new AlgaeGrabber();
   public final CoralChute m_coralChute = new CoralChute();
   public final Elevator m_elevator = new Elevator();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
@@ -143,12 +144,18 @@ public class RobotContainer {
     */
 
     // ALGAE GRABBER: Running the ball-grabber motors in one direction with the leftBumper and another with the rightBumper (speeds are preset)
+    //                Also, using the triggers to rotate the arm.
     final JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kLeftBumper.value);
-    leftBumper.onTrue(m_elevator.resetEncodersCommand());
-    //leftBumper.whileTrue(new RunBallGrabber(m_algaeGrabber, true).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    leftBumper.whileTrue(new RunBallGrabber(m_algaeGrabber, true).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
     
     final JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kRightBumper.value);
-    //rightBumper.whileTrue(new RunBallGrabber(m_algaeGrabber, false).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    rightBumper.whileTrue(new RunBallGrabber(m_algaeGrabber, false).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
+    final JoystickButton leftTrigger = new JoystickButton(xboxController, XboxController.Axis.kLeftTrigger.value);
+    leftTrigger.whileTrue(new RunAlgaeArmMotor(m_algaeGrabber, getLeftTrigger(), getRightTrigger()));
+
+    final JoystickButton rightTrigger = new JoystickButton(xboxController, XboxController.Axis.kRightTrigger.value);
+    rightTrigger.whileTrue(new RunAlgaeArmMotor(m_algaeGrabber, getLeftTrigger(), getRightTrigger()));
 
     // ELEVATOR: Pressing an AXYB button moves the elevator to level 0/1/2/3
     final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
@@ -165,7 +172,9 @@ public class RobotContainer {
 
     // CORAL CHUTE: Holding down the START button will advance the coral, with a backspin depending on the elevator height.
     final JoystickButton startButton = new JoystickButton(xboxController, XboxController.Button.kStart.value);
-    //startButton.whileTrue(new AdvanceCoral(m_coralChute).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    startButton.whileTrue(new AdvanceCoral(m_coralChute).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+
+    final JoystickButton backButton = new JoystickButton(xboxController, XboxController.Button.kBack.value);
   }
 
 

@@ -24,9 +24,9 @@ public class RunBallGrabber extends Command {
     @Override
     public void execute() {
         if(m_forward) {
-            m_algaeGrabber.setBallGrabberMotor(1.0); // TODO: Direction and speed of ball grabber motor.
+            m_algaeGrabber.setBallGrabberMotor(0.5); // TODO: Direction and speed of ball grabber motor.
         } else {
-            m_algaeGrabber.setBallGrabberMotor(-1.0);
+            m_algaeGrabber.setBallGrabberMotor(-0.5);
         }
     }
 

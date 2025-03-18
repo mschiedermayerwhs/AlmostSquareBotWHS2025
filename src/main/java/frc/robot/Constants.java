@@ -65,7 +65,7 @@ public class Constants {
 
     // Double check constants for AlgaeGrabber Motors
     public static final class AlgaeGrabberConstants {
-        public static final int kArmRotateMotorPort = 7;
+        public static final int kArmRotateMotorPort = 9; // 
         public static final int kBallGrabberMotorPort = 8;
 
         public static final int kTicksPerRevolution = 42;     // default for Rev Neo
@@ -79,8 +79,8 @@ public class Constants {
         public static final double kMinOutput = -0.25;
         public static final double kMaxOutput = 0.25;
 
-        public static final double kMinPosition = 0;
-        public static final double kMaxPosition = 1;
+        public static final double kMinPosition = -100;
+        public static final double kMaxPosition = 100;
 
         public static final double kArmDownPos = 0;
         public static final double kArmMidPos = 50;
@@ -88,7 +88,7 @@ public class Constants {
     }
 
     public static final class CoralChuteConstants {
-        public static final int kLeftOutputMotorPort = 9;
+        public static final int kLeftOutputMotorPort = 7;
         public static final int kRightOutputMotorPort = 10;
     }
 }

@@ -20,7 +20,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import frc.robot.Constants.CoralChuteConstants.*;
+import frc.robot.Constants.*;
 
 public class CoralChute extends SubsystemBase {
     private SparkMax leftOutputMotor;
@@ -32,11 +32,11 @@ public class CoralChute extends SubsystemBase {
         
         SparkMaxConfig rightConfig = new SparkMaxConfig();
         rightConfig.inverted(true);
-        // leftOutputMotor = new SparkMax(kLeftOutputMotorPort, MotorType.kBrushless);
-        //  leftOutputMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        leftOutputMotor = new SparkMax(CoralChuteConstants.kLeftOutputMotorPort, MotorType.kBrushless);
+        leftOutputMotor.configure(leftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        // rightOutputMotor = new SparkMax(kRightOutputMotorPort, MotorType.kBrushless);
-        //  rightOutputMotor.configure(notInvertedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        rightOutputMotor = new SparkMax(CoralChuteConstants.kRightOutputMotorPort, MotorType.kBrushless);
+        rightOutputMotor.configure(rightConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     @Override
@@ -55,10 +55,12 @@ public class CoralChute extends SubsystemBase {
     // here. Call these from Commands.
     public void setLeftOutputMotor(double speed) {
         leftOutputMotor.set(speed);
+        System.out.println("Setting left");
     }
 
     public void setRightOutputMotor(double speed) {
         rightOutputMotor.set(speed);
+        System.out.println("Setting right");
     }
 }
 

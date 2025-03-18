@@ -7,10 +7,10 @@ import java.util.function.DoubleSupplier;
 public class RunAlgaeArmMotor extends Command {
 
     private final AlgaeGrabber m_algaeGrabber;
-    private DoubleSupplier m_leftTrigger;
-    private DoubleSupplier m_rightTrigger;
+    private double m_leftTrigger;
+    private double m_rightTrigger;
 
-    public RunAlgaeArmMotor(AlgaeGrabber algaeGrabber, DoubleSupplier leftTrigger, DoubleSupplier rightTrigger) {
+    public RunAlgaeArmMotor(AlgaeGrabber algaeGrabber, double leftTrigger, double rightTrigger) {
         m_algaeGrabber = algaeGrabber;
         addRequirements(m_algaeGrabber);
     }
@@ -26,12 +26,13 @@ public class RunAlgaeArmMotor extends Command {
         // NOTE: The AlgaeGrabber's Arm Motor is limited in its position. The AlgaeGrabber.setArmRotateMotor(speed) method *should* work with the encoders to impose limits on its position.
         // Here, the velocity will be +1.0 if the left trigger is down all the way, and -1.0 if the right trigger is down all the way.
 
-        m_algaeGrabber.setArmRotateMotor(m_leftTrigger.getAsDouble() - m_rightTrigger.getAsDouble());
+        m_algaeGrabber.setArmRotateMotor(m_leftTrigger - m_rightTrigger);
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
+        m_algaeGrabber.setArmRotateMotor(0);
     }
 
     // Returns true when the command should end.
