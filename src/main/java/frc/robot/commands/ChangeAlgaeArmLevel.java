@@ -30,15 +30,10 @@ import frc.robot.Constants.AlgaeGrabberConstants;
 public class ChangeAlgaeArmLevel extends InstantCommand {
 
     private final AlgaeGrabber m_algaeGrabber;
-    private boolean goingUp;
-    private int m_algaeArmLevel;
+    private boolean m_goingUp;
 
     public ChangeAlgaeArmLevel(boolean goingUp, AlgaeGrabber subsystem) {
-        if(goingUp) {
-            m_algaeArmLevel = currentAlgaeArmHeight + 1;
-        } else {
-            m_algaeArmLevel = currentAlgaeArmHeight - 1;
-        }
+        m_goingUp = goingUp;
 
         m_algaeGrabber = subsystem;
         addRequirements(m_algaeGrabber);
@@ -46,19 +41,26 @@ public class ChangeAlgaeArmLevel extends InstantCommand {
 
     @Override
     public void execute() {
-        switch(m_algaeArmLevel) {
-            case 2: case 3:
-                m_algaeGrabber.goToSetpoint(kArmUpPos);
-                RobotContainer.currentAlgaeArmHeight = 2;
-                break;
-            case 1:
+        if(m_goingUp) {
+            if(currentAlgaeArmHeight == 0) {
+                System.out.println("0 to 1");
+                currentAlgaeArmHeight = 1;
                 m_algaeGrabber.goToSetpoint(kArmMidPos);
-                RobotContainer.currentAlgaeArmHeight = 1;
-                break;
-            case 0: case -1:
+            } else if(currentAlgaeArmHeight == 1) {
+                System.out.println("1 to 2");
+                currentAlgaeArmHeight = 2;
+                m_algaeGrabber.goToSetpoint(kArmUpPos);
+            }
+        } else {
+            if(currentAlgaeArmHeight == 1) {
+                System.out.println("1 to 0");
+                currentAlgaeArmHeight = 0;
                 m_algaeGrabber.goToSetpoint(kArmDownPos);
-                RobotContainer.currentAlgaeArmHeight = 0;
-                break;
+            } else if(currentAlgaeArmHeight == 2) {
+                System.out.println("2 to 1");
+                currentAlgaeArmHeight = 1;
+                m_algaeGrabber.goToSetpoint(kArmMidPos);
+            }
         }
     }
 

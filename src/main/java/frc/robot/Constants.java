@@ -52,7 +52,7 @@ public class Constants {
         public static final double kP = 0.01; //.01 is stable and sounds good, .02 has small oscillation sounds
         public static final double kI = 0.0;
         public static final double kD = 0.0;
-        public static final double kMinOutput = -0.5;
+        public static final double kMinOutput = -0.3;
         public static final double kMaxOutput = 0.5; 
 
         public static final double lvl0Height = 0; //checked good

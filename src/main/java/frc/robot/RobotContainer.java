@@ -55,11 +55,12 @@ public class RobotContainer {
   public final Elevator m_elevator = new Elevator();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
-  public static SlewRateLimiter leftLimit = new SlewRateLimiter(0.9);
-  public static SlewRateLimiter rightLimit = new SlewRateLimiter(0.9);
+  public static SlewRateLimiter leftLimit = new SlewRateLimiter(1.8);
+  public static SlewRateLimiter rightLimit = new SlewRateLimiter(1.8);
 
   // Joysticks
   private final XboxController xboxController = new XboxController(0);
+  private final XboxController xboxDriverController = new XboxController(1);
 
   // A chooser for autonomous commands
   SendableChooser<Command> m_chooser = new SendableChooser<>();
@@ -99,8 +100,8 @@ public class RobotContainer {
 
 
     // Configure default commands
-    m_driveSubsystem.setDefaultCommand(new TankDrive(() -> leftLimit.calculate(getLeftY()), () -> rightLimit.calculate(getRightY()), m_driveSubsystem));
-    //m_algaeGrabber.setDefaultCommand(new RunAlgaeArmMotor(m_algaeGrabber, () -> getLeftTrigger(), () -> getRightTrigger()));
+    m_driveSubsystem.setDefaultCommand(new TankDrive(() -> leftLimit.calculate(getDriverLeftY()), () -> rightLimit.calculate(getDriverRightY()), m_driveSubsystem));
+    m_algaeGrabber.setDefaultCommand(new RunBallGrabber(m_algaeGrabber, () -> getLeftTrigger() - getRightTrigger()));
 
     // Configure autonomous sendable chooser
     m_chooser.setDefaultOption("Autonomous Command", new AutonomousCommand(m_coralChute, m_elevator, m_driveSubsystem));
@@ -168,12 +169,6 @@ public class RobotContainer {
     final JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kRightBumper.value);
     rightBumper.onTrue(new ChangeAlgaeArmLevel(true, m_algaeGrabber));
     
-    final JoystickButton leftTrigger = new JoystickButton(xboxController, XboxController.Axis.kLeftTrigger.value);
-    leftTrigger.whileTrue(new RunBallGrabber(m_algaeGrabber, () -> getLeftTrigger()).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
-    final JoystickButton rightTrigger = new JoystickButton(xboxController, XboxController.Axis.kRightTrigger.value);
-    rightTrigger.whileTrue(new RunBallGrabber(m_algaeGrabber, () -> -getRightTrigger()).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
-
     // ELEVATOR: Pressing an AXYB button moves the elevator to level 0/1/2/3
     final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
     aButton.onTrue(new ChangeElevatorLevel(0, m_elevator).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
@@ -199,12 +194,12 @@ public class RobotContainer {
     return xboxController;
   }
 
-  public double getLeftY() {
-    return xboxController.getLeftY();
+  public double getDriverLeftY() {
+    return xboxDriverController.getLeftY();
   }
 
-  public double getRightY() {
-    return xboxController.getRightY();
+  public double getDriverRightY() {
+    return xboxDriverController.getRightY();
   }
 
   public double getLeftTrigger() {
@@ -243,7 +238,7 @@ public class RobotContainer {
     // System.out.println("getting autonomous command");
     // The selected command will be run in autonomous
     // return m_chooser.getSelected();
-    return new TankDrive(() -> 0.5, () -> 0.5, m_driveSubsystem).withTimeout(3.0);
+    return new TankDrive(() -> -0.5, () -> -0.5, m_driveSubsystem).withTimeout(3.0);
   }
 
 }

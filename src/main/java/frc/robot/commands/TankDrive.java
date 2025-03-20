@@ -43,8 +43,8 @@ public class TankDrive extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // Speed limited depending on height; if elevator is at L2 or L3, the joysticks are half as effective
-        if(RobotContainer.currentElevatorHeight > 1) {
+        // Speed limited depending on height; if elevator is at L2/3/4, the joysticks are half as effective
+        if(RobotContainer.currentElevatorHeight >= 1) {
             m_driveSubsystem.tankDrive(m_leftSpeed.getAsDouble() * 0.5, m_rightSpeed.getAsDouble() * 0.5); // TODO: Is speed limited sufficiently?
         } else {            
             m_driveSubsystem.tankDrive(m_leftSpeed.getAsDouble(), m_rightSpeed.getAsDouble());
