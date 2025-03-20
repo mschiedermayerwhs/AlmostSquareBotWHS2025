@@ -20,11 +20,14 @@ import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard.*;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.EventImportance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import java.util.function.DoubleSupplier;
@@ -73,6 +76,18 @@ public class RobotContainer {
     SmartDashboard.putData("Reset Drive Encoders", m_driveSubsystem.resetEncodersCommand());
     SmartDashboard.putData("Reset Elevator Encoders", m_elevator.resetEncodersCommand());
     SmartDashboard.putData("Reset Algae Arm Encoders", m_algaeGrabber.resetEncodersCommand());
+
+    SmartDashboard.putString("Driver/Elevator Height", getElevatorHeightString());
+    SmartDashboard.putString("Driver/Algae Arm Height", getAlgaeArmHeightString());
+    SmartDashboard.putData("Driver/Run Ball Intake", new RunBallGrabber(m_algaeGrabber, () -> 0.5));
+    /*
+     * What to send to new tab:
+     *  Current elevator + algae arm height
+     *  Buttons to move elevator/algae arm
+     *  Button to run coral
+     *  Camera views (front+back)
+     */
+
 
     // We need to figure out the value to pass to achieve those heights
     // SmartDashboard.putData("ChangeElevatorHeight", new ChangeElevatorHeight(
@@ -154,10 +169,10 @@ public class RobotContainer {
     rightBumper.onTrue(new ChangeAlgaeArmLevel(true, m_algaeGrabber));
     
     final JoystickButton leftTrigger = new JoystickButton(xboxController, XboxController.Axis.kLeftTrigger.value);
-    leftTrigger.whileTrue(new RunBallGrabber(m_algaeGrabber, getLeftTrigger()).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    leftTrigger.whileTrue(new RunBallGrabber(m_algaeGrabber, () -> getLeftTrigger()).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     final JoystickButton rightTrigger = new JoystickButton(xboxController, XboxController.Axis.kRightTrigger.value);
-    rightTrigger.whileTrue(new RunBallGrabber(m_algaeGrabber, -getRightTrigger()).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
+    rightTrigger.whileTrue(new RunBallGrabber(m_algaeGrabber, () -> -getRightTrigger()).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     // ELEVATOR: Pressing an AXYB button moves the elevator to level 0/1/2/3
     final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
@@ -200,15 +215,35 @@ public class RobotContainer {
     return xboxController.getRightTriggerAxis();
   }
 
+  public String getElevatorHeightString() {
+    switch(currentElevatorHeight) {
+      case 0: return "L1 (trough)";
+      case 1: return "L2";
+      case 2: return "L3";
+      case 3: return "L4";
+    }
+    return "" + currentElevatorHeight;
+  }
+
+  public String getAlgaeArmHeightString() {
+    switch(currentAlgaeArmHeight) {
+        case 0: return "low";
+        case 1: return "middle";
+        case 2: return "up";
+    }
+    return "" + currentAlgaeArmHeight;
+}
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    System.out.println("getting autonomous command");
+    // System.out.println("getting autonomous command");
     // The selected command will be run in autonomous
-    return m_chooser.getSelected();
+    // return m_chooser.getSelected();
+    return new TankDrive(() -> 0.5, () -> 0.5, m_driveSubsystem).withTimeout(3.0);
   }
 
 }

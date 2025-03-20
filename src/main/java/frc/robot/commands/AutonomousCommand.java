@@ -30,6 +30,9 @@ public class AutonomousCommand extends SequentialCommandGroup {
         addRequirements(m_coralChute, m_elevator, m_driveSubsystem);
 
         System.out.println("Running autonomous command");
+        addCommands(
+                new TankDrive(() -> 0.2, () -> 0.2, m_driveSubsystem).withTimeout(3.0)
+            );
 
         if(key == 1) {
             System.out.println("Going to score coral");

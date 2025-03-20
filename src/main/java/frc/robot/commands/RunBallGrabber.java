@@ -2,13 +2,14 @@
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeGrabber;
+import java.util.function.DoubleSupplier;
 
 public class RunBallGrabber extends Command {
 
     private final AlgaeGrabber m_algaeGrabber;
-    private double m_speed;
+    private DoubleSupplier m_speed;
 
-    public RunBallGrabber(AlgaeGrabber algaeGrabber, double speed) {
+    public RunBallGrabber(AlgaeGrabber algaeGrabber, DoubleSupplier speed) {
         m_algaeGrabber = algaeGrabber;
         addRequirements(m_algaeGrabber);
 
@@ -23,7 +24,7 @@ public class RunBallGrabber extends Command {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        m_algaeGrabber.setBallGrabberMotor(m_speed);
+        m_algaeGrabber.setBallGrabberMotor(m_speed.getAsDouble());
     }
 
     // Called once the command ends or is interrupted.

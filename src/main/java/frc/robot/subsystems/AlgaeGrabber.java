@@ -26,6 +26,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import static frc.robot.Constants.AlgaeGrabberConstants.*;
+import static frc.robot.RobotContainer.currentAlgaeArmHeight;
 
 /**
  *
@@ -66,6 +67,7 @@ public class AlgaeGrabber extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Arm Position", armRotateEnc.getPosition());
+        SmartDashboard.putString("Current Algae Arm Height", getAlgaeArmHeightString());
     }
 
     @Override
@@ -82,6 +84,15 @@ public class AlgaeGrabber extends SubsystemBase {
 
     public Command resetEncodersCommand() {
         return runOnce(() -> resetEncoders()).withTimeout(0.25);
+    }
+
+    public String getAlgaeArmHeightString() {
+        switch(currentAlgaeArmHeight) {
+            case 0: return "low";
+            case 1: return "middle";
+            case 2: return "up";
+        }
+        return "" + currentAlgaeArmHeight;
     }
 
     public void setBallGrabberMotor(double speed) {

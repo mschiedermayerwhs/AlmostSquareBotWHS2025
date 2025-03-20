@@ -78,6 +78,7 @@ public class Elevator extends SubsystemBase {
         SmartDashboard.putNumber("Elev Leader Pos", getLeadPosition());
         SmartDashboard.putNumber("Elev Follower Pos", getFollowerPosition());
         SmartDashboard.putBoolean("LimitSwitch", limitSwitch.get());
+        SmartDashboard.putString("Current Elevator Height", getElevatorHeightString());
     }
 
     @Override
@@ -112,6 +113,16 @@ public class Elevator extends SubsystemBase {
         followerMotorEnc.setPosition(0);
         PIDcontroller.setReference(0, ControlType.kPosition);
     }
+
+    public String getElevatorHeightString() {
+        switch(currentElevatorHeight) {
+          case 0: return "L1 (trough)";
+          case 1: return "L2";
+          case 2: return "L3";
+          case 3: return "L4";
+        }
+        return "" + currentElevatorHeight;
+      }
 
     public Command resetEncodersCommand() {
         return runOnce(() -> resetEncoders()).withTimeout(0.25);
