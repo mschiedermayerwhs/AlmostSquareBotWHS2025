@@ -91,5 +91,10 @@ public class Constants {
         public static final int kLeftOutputMotorPort = 9;
         public static final int kRightOutputMotorPort = 10;
     }
+
+    public static final class AutonomousConstants {
+        public static final double distanceToTravel = 10;
+        public static final double timeToAdvanceCoral = 2;
+    }
 }
 

@@ -108,6 +108,14 @@ public class Elevator extends SubsystemBase {
         System.out.println("Going to level " + level);
     }
 
+    public Command goToSetpointCommand(double setpoint) {
+        return runOnce(() -> goToSetpoint(setpoint)).withTimeout(0.25);
+    }
+
+    public void goToSetpoint(double setpoint) {
+        PIDcontroller.setReference(setpoint, ControlType.kPosition);
+    }
+
     public void resetEncoders() {
         leadMotorEnc.setPosition(0);
         followerMotorEnc.setPosition(0);

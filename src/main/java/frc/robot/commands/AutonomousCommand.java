@@ -29,23 +29,10 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
         addRequirements(m_coralChute, m_elevator, m_driveSubsystem);
 
-        System.out.println("Running autonomous command");
         addCommands(
-                new TankDrive(() -> 0.2, () -> 0.2, m_driveSubsystem).withTimeout(3.0)
-            );
-
-        if(key == 1) {
-            System.out.println("Going to score coral");
-            addCommands(
-
-            )
-            ;
-        } else if(key == 2) {
-            System.out.println("Going to leave starting line");
-            addCommands(
-                
-            );
-        }
+            new TankDrive(() -> -0.5, () -> -0.5, m_driveSubsystem).until(() -> m_driveSubsystem.getFrontLeftPos() < -4000).withTimeout(7).andThen(
+            new AdvanceCoral(m_coralChute).withTimeout(3))
+        );
     }
 
     public AutonomousCommand(CoralChute coralChute, Elevator elevator, DriveSubsystem driveSubsystem) {

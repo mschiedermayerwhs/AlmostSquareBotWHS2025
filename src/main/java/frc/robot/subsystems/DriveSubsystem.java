@@ -111,6 +111,10 @@ public class DriveSubsystem extends SubsystemBase {
         //System.out.println("tank driving: " + leftSpeed + ", " + rightSpeed);
     }
 
+    public void arcadeDrive(double speed, double rotation) {
+        m_differentialDrive.arcadeDrive(speed*kMaxOutput, rotation);
+    }
+
     @Override
     public void periodic() {
         SmartDashboard.putData(m_differentialDrive);

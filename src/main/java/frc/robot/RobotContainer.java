@@ -55,8 +55,8 @@ public class RobotContainer {
   public final Elevator m_elevator = new Elevator();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
-  public static SlewRateLimiter leftLimit = new SlewRateLimiter(1);
-  public static SlewRateLimiter rightLimit = new SlewRateLimiter(1);
+  public static SlewRateLimiter leftLimit = new SlewRateLimiter(2);
+  public static SlewRateLimiter rightLimit = new SlewRateLimiter(2);
 
   // Joysticks
   private final XboxController xboxController = new XboxController(0);
@@ -101,6 +101,7 @@ public class RobotContainer {
 
     // Configure default commands
     m_driveSubsystem.setDefaultCommand(new TankDrive(() -> leftLimit.calculate(getDriverLeftY()), () -> rightLimit.calculate(getDriverRightY()), m_driveSubsystem));
+    // m_driveSubsystem.setDefaultCommand(new ArcadeDrive(() -> leftLimit.calculate(getDriverLeftY()), () -> -getDriverRightX()))
     m_algaeGrabber.setDefaultCommand(new RunBallGrabber(m_algaeGrabber, () -> getLeftTrigger() - getRightTrigger()));
 
     // Configure autonomous sendable chooser
@@ -187,6 +188,7 @@ public class RobotContainer {
     startButton.whileTrue(new AdvanceCoral(m_coralChute).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
 
     final JoystickButton backButton = new JoystickButton(xboxController, XboxController.Button.kBack.value);
+    backButton.onTrue(m_elevator.goToSetpointCommand(m_elevator.getLeadPosition() - 20).withInterruptBehavior(InterruptionBehavior.kCancelSelf));
   }
 
 
@@ -204,6 +206,14 @@ public class RobotContainer {
 
   public double getDriverRightY() {
     return xboxDriverController.getRightY();
+  }
+
+  public double getDriverLeftX() {
+    return xboxDriverController.getLeftX();
+  }
+
+  public double getDriverRightX() {
+    return xboxDriverController.getRightX();
   }
 
   public double getLeftTrigger() {
@@ -242,7 +252,7 @@ public class RobotContainer {
     // System.out.println("getting autonomous command");
     // The selected command will be run in autonomous
     // return m_chooser.getSelected();
-    return new TankDrive(() -> -0.5, () -> -0.5, m_driveSubsystem).withTimeout(1);
+    return new AutonomousCommand(m_coralChute, m_elevator, m_driveSubsystem);
   }
 
 }
