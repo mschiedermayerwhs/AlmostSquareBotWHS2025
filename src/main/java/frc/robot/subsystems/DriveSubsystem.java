@@ -107,7 +107,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void tankDrive(double leftSpeed, double rightSpeed) {
-        m_differentialDrive.tankDrive(leftSpeed, rightSpeed, true);
+        m_differentialDrive.tankDrive(leftSpeed*kMaxOutput, rightSpeed*kMaxOutput, true);
         //System.out.println("tank driving: " + leftSpeed + ", " + rightSpeed);
     }
 

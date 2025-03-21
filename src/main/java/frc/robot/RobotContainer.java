@@ -55,8 +55,8 @@ public class RobotContainer {
   public final Elevator m_elevator = new Elevator();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
-  public static SlewRateLimiter leftLimit = new SlewRateLimiter(1.8);
-  public static SlewRateLimiter rightLimit = new SlewRateLimiter(1.8);
+  public static SlewRateLimiter leftLimit = new SlewRateLimiter(1);
+  public static SlewRateLimiter rightLimit = new SlewRateLimiter(1);
 
   // Joysticks
   private final XboxController xboxController = new XboxController(0);
@@ -194,6 +194,10 @@ public class RobotContainer {
     return xboxController;
   }
 
+  public XboxController getDriverXboxController() {
+    return xboxDriverController;
+  }
+
   public double getDriverLeftY() {
     return xboxDriverController.getLeftY();
   }
@@ -238,7 +242,7 @@ public class RobotContainer {
     // System.out.println("getting autonomous command");
     // The selected command will be run in autonomous
     // return m_chooser.getSelected();
-    return new TankDrive(() -> -0.5, () -> -0.5, m_driveSubsystem).withTimeout(3.0);
+    return new TankDrive(() -> -0.5, () -> -0.5, m_driveSubsystem).withTimeout(1.5);
   }
 
 }

@@ -32,8 +32,8 @@ public class Constants {
        public static final double kDriveWheelsCircumference = 152.4 * Math.PI; //6 inch diam in mm 
        public static final double kDriveEncoderConversionFactor = kDriveGearRatio * kDriveWheelsCircumference / kTicksPerRevolution;
 
-       public static final double kMinOutput = -0.25; // only used
-       public static final double kMaxOutput = 0.25;
+       public static final double kMinOutput = -0.75; // only used
+       public static final double kMaxOutput = 0.75;
        public static final double kP = 0.0005;
        public static final double kI = 0.0;
        public static final double kD = 0.0;
