@@ -242,7 +242,7 @@ public class RobotContainer {
     // System.out.println("getting autonomous command");
     // The selected command will be run in autonomous
     // return m_chooser.getSelected();
-    return new TankDrive(() -> -0.5, () -> -0.5, m_driveSubsystem).withTimeout(1.5);
+    return new TankDrive(() -> -0.5, () -> -0.5, m_driveSubsystem).withTimeout(1);
   }
 
 }
