@@ -55,8 +55,8 @@ public class RobotContainer {
   public final Elevator m_elevator = new Elevator();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
-  public static SlewRateLimiter leftLimit = new SlewRateLimiter(2);
-  public static SlewRateLimiter rightLimit = new SlewRateLimiter(2);
+  public static SlewRateLimiter leftLimit = new SlewRateLimiter(1.6);
+  public static SlewRateLimiter rightLimit = new SlewRateLimiter(1.6);
 
   // Joysticks
   private final XboxController xboxController = new XboxController(0);
@@ -97,11 +97,9 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-
-
     // Configure default commands
-    m_driveSubsystem.setDefaultCommand(new TankDrive(() -> leftLimit.calculate(getDriverLeftY()), () -> rightLimit.calculate(getDriverRightY()), m_driveSubsystem));
-    // m_driveSubsystem.setDefaultCommand(new ArcadeDrive(() -> leftLimit.calculate(getDriverLeftY()), () -> -getDriverRightX()))
+    // m_driveSubsystem.setDefaultCommand(new TankDrive(() -> leftLimit.calculate(getDriverLeftY()), () -> rightLimit.calculate(getDriverRightY()), m_driveSubsystem));
+    m_driveSubsystem.setDefaultCommand(new ArcadeDrive(() -> leftLimit.calculate(getDriverLeftY()), () -> getDriverRightX(), m_driveSubsystem));
     m_algaeGrabber.setDefaultCommand(new RunBallGrabber(m_algaeGrabber, () -> getLeftTrigger() - getRightTrigger()));
 
     // Configure autonomous sendable chooser
@@ -165,10 +163,10 @@ public class RobotContainer {
     // ALGAE GRABBER: Running the ball-grabber motors in one direction with the leftTrigger and another with the rightTrigger (speeds are preset)
     //                Also, using the triggers to rotate the arm.
     final JoystickButton leftBumper = new JoystickButton(xboxController, XboxController.Button.kLeftBumper.value);
-    leftBumper.onTrue(new ChangeAlgaeArmLevel(false, m_algaeGrabber));
+    leftBumper.whileTrue(new RunAlgaeArmMotor(m_algaeGrabber, () -> -0.1));
     
     final JoystickButton rightBumper = new JoystickButton(xboxController, XboxController.Button.kRightBumper.value);
-    rightBumper.onTrue(new ChangeAlgaeArmLevel(true, m_algaeGrabber));
+    rightBumper.whileTrue(new RunAlgaeArmMotor(m_algaeGrabber, () -> 0.1));
     
     // ELEVATOR: Pressing an AXYB button moves the elevator to level 0/1/2/3
     final JoystickButton aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);

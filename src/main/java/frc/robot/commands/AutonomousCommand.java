@@ -31,7 +31,7 @@ public class AutonomousCommand extends SequentialCommandGroup {
 
         addCommands(
             new TankDrive(() -> -0.5, () -> -0.5, m_driveSubsystem).until(() -> m_driveSubsystem.getFrontLeftPos() < -4000).withTimeout(7).andThen(
-            new AdvanceCoral(m_coralChute).withTimeout(3))
+            new AdvanceCoral(m_coralChute, true).withTimeout(3))
         );
     }
 

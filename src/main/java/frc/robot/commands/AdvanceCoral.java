@@ -38,6 +38,9 @@ public class AdvanceCoral extends Command {
         } else if(m_fast) {
             m_coralChute.setLeftOutputMotor(0.5);
             m_coralChute.setRightOutputMotor(0.7);
+        } else if(RobotContainer.currentElevatorHeight == 3) {
+            m_coralChute.setLeftOutputMotor(1);
+            m_coralChute.setRightOutputMotor(1);
         } else {
             m_coralChute.setLeftOutputMotor(0.25);
             m_coralChute.setRightOutputMotor(0.25);
