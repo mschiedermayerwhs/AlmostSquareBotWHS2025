@@ -20,6 +20,11 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public class Constants {
+
+    public static final double kTankLeftSlewRate = 1.6;
+    public static final double kTankRightSlewRate = 1.6;
+    public static final double kArcadeSpeedSlewRate = 1.6;
+    public static final double kArcadeRotateSlewRate = 2;
        
     public static final class DriveConstants {
        public static final int kBackLeftDrivePort = 2;
@@ -90,10 +95,19 @@ public class Constants {
     public static final class CoralChuteConstants {
         public static final int kLeftOutputMotorPort = 9;
         public static final int kRightOutputMotorPort = 10;
+
+        public static final double kNormalLeftOutputSpeed = 0.2;
+        public static final double kNormalRightOutputSpeed = 0.25;
+
+        public static final double kFastLeftOutputSpeed = 0.5;  // during auto
+        public static final double kFastRightOutputSpeed = 0.7;
+
+        public static final double kMaxLeftOutputSpeed = 0.2;   // on top level
+        public static final double kMaxRightOutputSpeed = 0.2;
     }
 
     public static final class AutonomousConstants {
-        public static final double distanceToTravel = 10;
+        public static final double distanceToTravel = 10;   // NOT USED
         public static final double timeToAdvanceCoral = 2;
     }
 }

@@ -12,7 +12,6 @@ public class RunAlgaeArmMotor extends Command {
     public RunAlgaeArmMotor(AlgaeGrabber algaeGrabber, DoubleSupplier speed) {
         m_algaeGrabber = algaeGrabber;
         m_speed = speed;
-        addRequirements(m_algaeGrabber);
     }
 
     // Called when the command is initially scheduled.

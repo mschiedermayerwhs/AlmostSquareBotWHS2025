@@ -112,7 +112,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     public void arcadeDrive(double speed, double rotation) {
-        m_differentialDrive.arcadeDrive(speed*kMaxOutput, rotation);
+        m_differentialDrive.arcadeDrive(speed*kMaxOutput, rotation*kMaxOutput);
     }
 
     @Override

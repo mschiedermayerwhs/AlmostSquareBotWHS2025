@@ -55,8 +55,11 @@ public class RobotContainer {
   public final Elevator m_elevator = new Elevator();
   public final DriveSubsystem m_driveSubsystem = new DriveSubsystem();
 
-  public static SlewRateLimiter leftLimit = new SlewRateLimiter(1.6);
-  public static SlewRateLimiter rightLimit = new SlewRateLimiter(1.6);
+  public static SlewRateLimiter tankLeftLimiter = new SlewRateLimiter(Constants.kTankLeftSlewRate);
+  public static SlewRateLimiter tankRightLimiter = new SlewRateLimiter(Constants.kTankRightSlewRate);
+
+  public static SlewRateLimiter arcadeSpeedLimiter = new SlewRateLimiter(Constants.kArcadeSpeedSlewRate);
+  public static SlewRateLimiter arcadeRotateLimiter = new SlewRateLimiter(Constants.kArcadeRotateSlewRate);
 
   // Joysticks
   private final XboxController xboxController = new XboxController(0);
@@ -98,8 +101,8 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    // m_driveSubsystem.setDefaultCommand(new TankDrive(() -> leftLimit.calculate(getDriverLeftY()), () -> rightLimit.calculate(getDriverRightY()), m_driveSubsystem));
-    m_driveSubsystem.setDefaultCommand(new ArcadeDrive(() -> leftLimit.calculate(getDriverLeftY()), () -> getDriverRightX(), m_driveSubsystem));
+    //m_driveSubsystem.setDefaultCommand(new TankDrive(() -> tankLeftLimiter.calculate(getDriverLeftY()), () -> tankRightLimiter.calculate(getDriverRightY()), m_driveSubsystem));
+    m_driveSubsystem.setDefaultCommand(new ArcadeDrive(() -> arcadeSpeedLimiter.calculate(getDriverLeftY()), () -> arcadeRotateLimiter.calculate(getDriverRightX()), m_driveSubsystem));
     m_algaeGrabber.setDefaultCommand(new RunBallGrabber(m_algaeGrabber, () -> getLeftTrigger() - getRightTrigger()));
 
     // Configure autonomous sendable chooser

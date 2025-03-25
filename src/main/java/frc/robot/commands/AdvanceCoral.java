@@ -5,11 +5,15 @@ import edu.wpi.first.wpilibj.RobotBase;
 
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.CoralChute;
+import frc.robot.Constants.CoralChuteConstants;
+import frc.robot.Constants.CoralChuteConstants.*;
 
 public class AdvanceCoral extends Command {
     
     private final CoralChute m_coralChute;
     private boolean m_fast;
+    private double m_leftSpeed = 0;
+    private double m_rightSpeed = 0;
 
     public AdvanceCoral(CoralChute subsystem) {
         m_coralChute = subsystem;
@@ -23,6 +27,14 @@ public class AdvanceCoral extends Command {
         addRequirements(m_coralChute);
     }
 
+    public AdvanceCoral(CoralChute subsystem, double leftSpeed, double rightSpeed) {
+        m_coralChute = subsystem;
+        m_fast = false;
+        m_leftSpeed = leftSpeed;
+        m_rightSpeed = rightSpeed;
+        addRequirements(m_coralChute);
+    }
+
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
@@ -33,14 +45,17 @@ public class AdvanceCoral extends Command {
     @Override
     public void execute() {
         if(RobotContainer.currentElevatorHeight == 0) {
-            m_coralChute.setLeftOutputMotor(0.2);
-            m_coralChute.setRightOutputMotor(0.25);
+            m_coralChute.setLeftOutputMotor(CoralChuteConstants.kNormalLeftOutputSpeed);
+            m_coralChute.setRightOutputMotor(CoralChuteConstants.kNormalRightOutputSpeed);
         } else if(m_fast) {
-            m_coralChute.setLeftOutputMotor(0.5);
-            m_coralChute.setRightOutputMotor(0.7);
+            m_coralChute.setLeftOutputMotor(CoralChuteConstants.kFastLeftOutputSpeed);
+            m_coralChute.setRightOutputMotor(CoralChuteConstants.kFastRightOutputSpeed);
         } else if(RobotContainer.currentElevatorHeight == 3) {
-            m_coralChute.setLeftOutputMotor(1);
-            m_coralChute.setRightOutputMotor(1);
+            m_coralChute.setLeftOutputMotor(CoralChuteConstants.kMaxLeftOutputSpeed);
+            m_coralChute.setRightOutputMotor(CoralChuteConstants.kMaxRightOutputSpeed);
+        } else if(m_leftSpeed != 0 || m_rightSpeed != 0) {
+            m_coralChute.setLeftOutputMotor(m_leftSpeed);
+            m_coralChute.setRightOutputMotor(m_rightSpeed);
         } else {
             m_coralChute.setLeftOutputMotor(0.25);
             m_coralChute.setRightOutputMotor(0.25);
